@@ -1,0 +1,12 @@
+.high-count {
+    color: red;
+    font-weight: bold;
+  }
+  
+  .medium-count {
+    color: orange;
+  }
+  
+  .low-count {
+    color: green;
+  }

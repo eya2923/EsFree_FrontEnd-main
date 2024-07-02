@@ -1,0 +1,30 @@
+#logofront {
+    width: 150px; /* Largeur de l'icône */
+    height: 150px; /* Hauteur de l'icône */
+}
+.app-name {
+        display: inline-block; /* Permet d'appliquer des styles de hauteur et de largeur */
+        vertical-align: middle;
+        font-weight: bold;
+        font-size: 55px;
+        
+         /* Alignement vertical au centre */
+      }
+      
+      .app-name span {
+        /* Styles pour les mots individuels */
+        vertical-align: middle;
+         /* Alignement vertical au centre */
+        font-weight: bold;
+        font-size: 45px;
+      }
+      
+     
+ 
+      .free {
+        /* Styles spécifiques pour "Free" */
+         /* Taille de police pour "Free" */
+        
+         font-weight: bold; /* Poids de la police pour "Free" */
+        color: #e84545; /* Couleur du texte pour "Free" */
+      }

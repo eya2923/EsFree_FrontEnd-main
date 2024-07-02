@@ -1,0 +1,89 @@
+.profile-image {
+  text-align: center; /* Center align the contents */
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.profile-avatar {
+  width: 150px; /* Assurez-vous que la largeur et la hauteur sont égales */
+  height: 150px;
+  object-fit: cover; /* Pour s'assurer que l'image couvre complètement le conteneur */
+  border-radius: 50%; /* Pour rendre l'image circulaire */
+}
+.file-label {
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+}
+
+
+.file-label-text {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #e84545;
+  color: #fff;
+  padding: 2px 40px; /* Increase padding to make it longer */
+  border-radius: 20px;
+  cursor: pointer;
+  margin-top: 30p;
+}
+
+
+.profile-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow effect */
+}
+.user-details {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  margin: 0 auto; /* Center the container horizontally */
+  max-width: 600px; /* Limit the maximum width of the container */
+  text-align: center; /* Center the text horizontally */
+  font-family: 'Arial', sans-serif; /* Change the font family */
+}
+
+.icon-align {
+  font-size: inherit; /* Utiliser la taille de police héritée pour les icônes */
+  vertical-align: middle; /* Aligner les icônes verticalement au milieu */
+  margin-right: 8px; /* Ajouter un espacement à droite des icônes */
+}
+
+.user-details h2 {
+  margin-top: 0;
+  font-size: 24px; /* Adjust the font size */
+  font-weight: bold; /* Make the text bold */
+}
+
+.logout-button, .update-button {
+  background-color: hwb(0 7% 37%);;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.logout-button:hover, .update-button:hover {
+  background-color: #f78d63;
+}
+
+.profile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.imgb {
+  width: 100px;
+  height:100px;
+  text-align: center;
+  margin: 0 auto;
+  display: block; 
+}

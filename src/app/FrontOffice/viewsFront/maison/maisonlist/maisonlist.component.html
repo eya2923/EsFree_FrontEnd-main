@@ -1,0 +1,171 @@
+<style>
+    .preview {
+      max-width: 200px;
+    }
+</style>
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<div class="col-lg-8">
+  <div class="search-container mb-4 d-flex align-items-center">
+    <input type="text" [(ngModel)]="searchTerm" (input)="chercherMaison()" placeholder="Chercher l'adresse ..."  class="form-control col-4"> &nbsp;&nbsp;&nbsp;
+    <button class="btn btn-primary" (click)="loadMaisons(0)"> reset List</button>
+  </div>
+  </div>
+<div class="container">
+  <button class="btn btn-primary " (click)="openAddDialog();" data-toggle="modal" data-toggle="modal" data-target="#myModal">
+      <i class="bi bi-plus"></i> Ajouter une maison
+  </button>
+  <br><br>
+</div>
+
+<!-- Code pour afficher les maisons --> 
+<br>
+<br>
+
+
+<div class="container mt-3">
+    <div class="row align-items-center">
+        <div class="col-lg-6 col-md-6 col-sm-12">
+            <h4 style="text-align: center;">Marge de prix :</h4>
+            <br>
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <input type="range" class="form-range form-range-sm" style="width: 100%;" [(ngModel)]="minPrice" min="0" max="1000" step="10" (input)="onRangeChange(0)">
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <input type="range" class="form-range form-range-sm" style="width: 100%;" [(ngModel)]="maxPrice" min="1000" max="2000" step="10" (input)="onRangeChange(0)">
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12 text-end"> 
+            <div class="row justify-content-end align-items-center"> 
+
+                <div class="col-lg-12 col-md-12 col-sm-12 mt-2">
+                    <label for="sortOrder" class="form-label"><h5 class="text-end">Ordre :&nbsp;&nbsp;&nbsp;</h5></label>
+
+                    <select id="sortOrder" name="sortOrder" class=" form-select-sm" [(ngModel)]="sortOrder" (change)="sortMaisons(0)">
+                        <option value="asc">Croissant</option>
+                        <option value="desc">Décroissant</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    <div class="row mt-2">
+        <div class="col-lg-12 col-md-12 col-sm-12 ms-3">
+            <p class="left-150">Marge de prix sélectionnée: {{ minPrice }} - {{ maxPrice }}</p>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-4 col-md-6 col-sm-12" *ngFor="let maison of maisonsDisponibles">
+          <div class="card mb-3">
+            <img class="card-img-top" [src]="maison.images[0]" alt="Image de la maison">
+            <div class="card-body">
+              <h5 class="card-title">{{ maison.adresse }}</h5>
+              <p class="card-text">Prix : {{ maison.prix }} TND</p>
+              <p class="card-text">{{ maison.description }}</p>
+              <div class="img-cap">
+                <a [routerLink]="['/user/afficherMaison', maison.id_maison]" class=""> Détails !!<i class="ti-arrow-right"></i></a>
+                <button class="btn btn-primary" (click)="reserverMaison(maison.id_maison, this.id)">
+                  <i class="bi bi-plus"></i> Réserver
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Pagination section -->
+<div class="pagination">
+    <!-- Bouton précédent -->
+    <button class="btn btn-primary" [disabled]="isPreviousButtonDisabled()" (click)="loadMaisons(pageNumber - 1)">Précédent</button>
+  
+    <!-- Affichage du numéro de page -->
+    <span>Page {{ pageNumber + 1 }} / {{ totalPages }}</span>
+  
+    <!-- Bouton suivant -->
+    <button class="btn btn-primary" [disabled]="isNextButtonDisabled()" (click)="loadMaisons(pageNumber + 1)">Suivant</button>
+  </div>
+  <br>
+  <br>
+  <div>
+    <input placeholder="Enter your location" type="text" [(ngModel)]="loc">
+<button type="submit" class="btn btn-primary" (click)="getLocationCoordinates()">Get Coordinates</button>
+  </div>
+  <div id="map" style="height: 400px;"></div>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<!-- Pop-Up pour ajouter une maison -->
+<div class="modal fade" id="myModal" role="dialog" *ngIf="showAddDialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title">Ajouter une maison</h2>
+        </div>
+        <div class="modal-body">
+          <form (ngSubmit)="onSubmit()" #taskForm="ngForm">
+            <div class="form-group">
+                <label for="adresse">Adresse :</label>
+                <input type="text" id="adresse" [(ngModel)]="newMaison.adresse" name="adresse" class="form-control" required minlength="5">
+                <div *ngIf="taskForm.controls['adresse'].invalid && (taskForm.controls['adresse'].dirty || taskForm.controls['adresse'].touched)">
+                    <div class="text-danger" *ngIf="taskForm.controls['adresse'].errors?.['required']">Veuillez insérer l'adresse.</div>
+                    <div class="text-danger" *ngIf="taskForm.controls['adresse'].errors?.['minlength']">L'adresse doit contenir au moins 5 caractères.</div>
+                </div>
+            </div>
+            <br>
+            <div class="form-group">
+                <label for="description">Description :</label>
+                <input type="text" id="description" [(ngModel)]="newMaison.description" name="description" class="form-control" required minlength="5">
+                <div *ngIf="taskForm.controls['description'].invalid && (taskForm.controls['description'].dirty || taskForm.controls['description'].touched)">
+                    <div class="text-danger" *ngIf="taskForm.controls['description'].errors?.['required']">Veuillez insérer la description.</div>
+                    <div class="text-danger" *ngIf="taskForm.controls['description'].errors?.['minlength']">La description doit contenir au moins 5 caractères.</div>
+                </div>
+            </div>
+            <br>
+            <div class="form-group">
+                <label for="prix">Prix :</label>
+                <input type="text" id="prix" [(ngModel)]="newMaison.prix" name="prix" class="form-control" required pattern="[0-9]+(\.[0-9]+)?">
+                <div *ngIf="taskForm.controls['prix'].invalid && (taskForm.controls['prix'].dirty || taskForm.controls['prix'].touched)">
+                    <div class="text-danger" *ngIf="taskForm.controls['prix'].errors?.['required']">Veuillez insérer le prix.</div>
+                    <div class="text-danger" *ngIf="taskForm.controls['prix'].errors?.['pattern']">Le prix doit être un nombre valide.</div>
+                </div>
+            </div>
+            <br>
+            <div class="form-group">
+                <label for="nbrplacedispo">Nombre de place :</label>
+                <input type="text" id="nbrplacedispo" [(ngModel)]="newMaison.nbrplacedispo" name="nbrplacedispo" class="form-control" required pattern="[0-9]+(\.[0-9]+)?">
+                <div *ngIf="taskForm.controls['nbrplacedispo'].invalid && (taskForm.controls['nbrplacedispo'].dirty || taskForm.controls['nbrplacedispo'].touched)">
+                    <div class="text-danger" *ngIf="taskForm.controls['nbrplacedispo'].errors?.['required']">Veuillez insérer le nombre de place positif.</div>
+                    <div class="text-danger" *ngIf="taskForm.controls['nbrplacedispo'].errors?.['pattern']">Le nombre de place doit être un nombre valide.</div>
+                </div>
+            </div>
+            <br>
+            <div class="form-group">
+              <label for="name">Nom :</label>
+              <input type="text" id="name" [(ngModel)]="username" name="name" class="form-control" required readonly >
+          </div>
+          <!-- Conteneur pour la carte Leaflet -->
+          <br>            
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" [disabled]="taskForm.invalid">Ajouter cette maison</button>
+                <button type="button" class="btn btn-secondary btn-default" data-dismiss="modal">Annuler</button>
+            </div>
+        </form>
+        </div>
+      </div>
+      
+    </div>
+</div>
+

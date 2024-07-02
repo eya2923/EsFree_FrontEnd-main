@@ -1,0 +1,58 @@
+<header id="header" class="header fixed-top d-flex align-items-center">
+    <div class="container-fluid d-flex align-items-center justify-content-between">
+
+      <a href="index.html" class="logo d-flex align-items-center me-auto me-xl-0">
+        <!-- Uncomment the line below if you also wish to use an image logo -->
+        <!--  <img src="/assets/BackOffice/images/icon/esfree.png" alt=""> -->
+        <h3 class="app-name">Es<span class="free">Free</span></h3>
+
+        <span class="app-name">.</span>
+      </a>
+
+      <!-- Nav Menu -->
+      <nav id="navmenu" class="navmenu">
+        <ul>
+          <li><a routerLink="home" >Accueil</a></li>
+          <li class="dropdown has-dropdown"><a href="#"><span>Events</span> <i class="bi bi-chevron-down"></i></a>
+            <ul class="dd-box-shadow">
+              <li><a routerLink="eventlist">Our Events</a></li>
+              <li><a routerLink="eventcalendar">Calendar Events</a></li>
+              <li><a routerLink="myevents">My Events</a></li>
+              <li><a routerLink="myparticipations">My Participations</a></li>
+            </ul>
+          </li>
+          
+          <li class="dropdown has-dropdown"><a routerLink="itemList"><span>Lost And Found</span> <i class="bi bi-chevron-down"></i></a>
+          <ul class="dd-box-shadow">
+           <li><a routerLink="myitems/{{id}}">My Items</a></li>
+             </ul></li>
+          <li><a [routerLink]="['maisonlist']"  href="index.html#team">Colocation</a></li>
+          
+          
+          <li class="dropdown has-dropdown"><a routerLink="market">Market Place<i class="bi bi-chevron-down"></i></a>
+            <ul class="dd-box-shadow">
+              <li><a href="#" routerLink="myitems">items i posted</a></li>
+            </ul>
+          </li>
+          
+          
+          <li class="dropdown has-dropdown"><a><span>Carpooling</span> <i class="bi bi-chevron-down"></i></a>
+            <ul class="dd-box-shadow">
+              <li><a routerLink="listCovoiturage">All Carpoolings</a></li>
+              <li><a routerLink="Mycov">My Carpoolings</a></li>
+            
+            </ul>
+          </li>
+          
+          <li ><a href="#" routerLink="/user/profile"><span>Profile</span> </a>
+          </li>
+          
+        </ul>
+
+        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+      </nav><!-- End Nav Menu -->
+
+      <a class="btn-getstarted" href="index.html#about" (click)="logOut()">log out</a>
+
+    </div>
+  </header><!-- End Header -->

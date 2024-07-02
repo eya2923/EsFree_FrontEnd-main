@@ -1,0 +1,51 @@
+@import '~swiper/swiper-bundle.css';
+
+/* Styles pour l'image principale */
+.main-image {
+    position: relative;
+}
+
+.main-image img {
+    width: 100%; /* Largeur de l'image principale */
+    height: auto; /* Hauteur ajustée automatiquement pour maintenir le rapport d'aspect */
+    max-height: 500px; /* Hauteur maximale de l'image principale (augmentée) */
+}
+
+/* Styles pour les images floues */
+.blur-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    filter: blur(8px); /* Ajustez le flou selon votre préférence */
+    z-index: -1;
+    width: 100%; /* Largeur de l'image floue */
+    height: auto; /* Hauteur ajustée automatiquement pour maintenir le rapport d'aspect */
+    max-height: 100px; /* Hauteur maximale de l'image floue */
+}
+
+/* Styles pour les miniatures */
+.thumbnails {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.thumbnail {
+    width: 100px; /* Largeur des miniatures */
+    height: 100px; /* Hauteur des miniatures */
+    margin: 0 5px;
+    cursor: pointer;
+}
+
+.thumbnail img {
+    width: 100%;
+    height: auto;
+    filter: blur(3px); /* Ajustez le flou selon votre préférence */
+}
+
+.thumbnail.active img {
+    filter: none; /* Retire le flou sur l'image active */
+}

@@ -1,0 +1,94 @@
+<br>
+<br>
+<br>
+<br>
+<br>
+<div class="container" *ngIf="maison">
+  <div class="main-image">
+    <img [src]="maison.images[currentImageIndex]" alt="Image de la maison">
+  </div>
+  <h2>{{ maison.adresse }}</h2>
+  <p>Description: {{ maison.description }}</p>
+  <p>Prix: {{ maison.prix }}</p>
+  <p>Nombre de place disponible : {{ maison.nbrplacedispo }}</p>
+  <p>Ajouté par : {{ maison.user.name }}</p>
+  <div class="thumbnails">
+    <div *ngFor="let image of maison.images; let i = index" class="thumbnail" [class.active]="i === currentImageIndex" (click)="showImage(i)">
+      <img [src]="image" alt="Thumbnail de la maison">
+    </div>
+  </div>
+  <div *ngIf="maison.demandeurs === null || maison.demandeurs.length === 0">
+    <h3>Il n'existe aucun demandeur pour le moment.</h3>
+</div>
+
+<br>
+<div *ngIf="maison.demandeurs && maison.demandeurs.length > 0">
+  <h3>Liste des demandeurs :</h3>
+  <br>
+  <table class="table">
+      <thead>
+          <tr>
+              <th scope="col">Nom</th>
+              <th scope="col">Email</th>
+              <th scope="col">Num telephone</th>
+              <th scope="col">Action</th>
+          </tr>
+      </thead>
+      <tbody>
+          <tr *ngFor="let demandeur of maison.demandeurs">
+              <td>{{ demandeur.name }}</td>
+              <td>{{ demandeur.email }}</td>
+              <td>{{ demandeur.phoneNumber }}</td>
+              <td>
+                  <div class="btn-group" role="group" aria-label="Actions">
+                      <button type="button" class="btn btn-success" (click)="openAddContratDialog(demandeur.id,maison.id_maison,demandeur.name);" data-toggle="modal" data-toggle="modal" data-target="#Modaladdcontrat">Accepter</button>
+                      <button type="button" class="btn btn-danger" (click)="refuserDemandeur(maison.id_maison, demandeur.id)">Refuser</button>
+                  </div>
+              </td>
+          </tr>
+      </tbody>
+  </table>
+</div>
+</div>
+
+
+<!-- Afficher add contrat modal -->
+
+<div class="modal fade" id="Modaladdcontrat" role="dialog" *ngIf="showAddContratDialog">
+  <br>
+  <br>
+  <div class="modal-dialog">
+  
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Ajouter un contrat de location</h2>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="onSubmitContrat()" #contratForm="ngForm">
+          <div class="form-group">
+              <label for="date_debut">Date de début :</label>
+              <input type="date" id="date_debut" [(ngModel)]="newContrat.date_debut" name="date_debut" class="form-control" required>
+          </div>
+          <br>
+          <div class="form-group">
+              <label for="date_fin">Date de fin :</label>
+              <input type="date" id="date_fin" [(ngModel)]="newContrat.date_fin" name="date_fin" class="form-control" required>
+          </div>
+          <br>
+          <div class="form-group">
+              <label for="colocataires">Colocataire :</label>
+              <input type="text" id="colocataires" [(ngModel)]="this.Username" name="colocataires" class="form-control" required readonly >
+          </div>
+          <br>
+          
+          <div class="modal-footer">
+              <button type="submit" class="btn btn-primary" [disabled]="contratForm.invalid">Ajouter ce contrat</button>
+              <button type="button" class="btn btn-secondary btn-default" data-dismiss="modal">Annuler</button>
+          </div>
+      </form>
+      </div>
+    </div>
+    
+  </div>
+</div>

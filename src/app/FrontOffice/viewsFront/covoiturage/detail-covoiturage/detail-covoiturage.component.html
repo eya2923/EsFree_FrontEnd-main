@@ -1,0 +1,168 @@
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+ <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>   
+<section id="blog-details" class="blog-details">
+
+    <div class="container aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
+
+      <div class="row g-5" *ngIf="covoiturage">
+
+        <div class="col-lg-8">
+
+          <article class="iq-card" class="article">
+
+          
+                <div id="map" style="height: 400px;"></div>
+                       
+
+            <h2 class="title">from {{covoiturage.lieu_depart}} to {{covoiturage.destination}}</h2>
+            <h2 class="title">Places : {{covoiturage.nombre_placecov}} remaining </h2>
+
+            <div class="meta-top">
+              <ul>
+                <li class="d-flex align-items-center"><i class="bi bi-person"></i> <a >Username</a></li>
+                <li class="d-flex align-items-center"><i class="bi bi-clock"></i> <a><time datetime="2020-01-01">{{covoiturage.date_depart}}</time></a></li>
+                <li class="d-flex align-items-center"><i class="bi bi-chat-dots"></i> <a >{{ listavisCov[covoiturage.id_cov]?.length || 0 }}  Comments</a></li>
+              </ul>
+            </div><!-- End meta top -->
+
+            <div class="content">
+              <h2 class="title">
+                   Description 
+              </h2>
+                <p> {{covoiturage.description}}</p>
+              
+           
+                <div class="row justify-content-center">
+                  <div class="col-md-6 mb-3">
+                    <button style="margin-left:400px; width: 30%;"  (click)="reserveCov(id_cov)"  class="btn btn-primary" type="submit">Reserve </button>  <!--(click) =" sendMessage('+21658404108','',covoiturage.id_cov)"-->
+                  </div>
+                </div>
+
+             
+              <img src="/assets/BackOffice/img/blog/blog-inside-post.jpg" class="img-fluid" alt="">
+
+             
+
+            </div><!-- End post content -->
+
+        
+          </article><!-- End post article -->
+
+       
+
+          <div class="comments">
+
+            <h4 class="comments-count">{{ listavisCov[covoiturage.id_cov]?.length || 0 }} Comments </h4>
+
+            <div id="comment-1" class="comment"  *ngFor="let aviss of listavisCov[covoiturage.id_cov]" >
+              <div class="iq-card">
+                <div class="iq-card-header d-flex justify-content-between">
+                  <img class="profile-pic img-fluid" src="/assets/BackOffice/images/user/01.jpg" alt="profile-pic">
+
+                   <div class="iq-header-title">
+                    
+                      <h4 class="card-title" style="color: red; ">Notice {{aviss.id_avis}}</h4>
+                   </div>
+                   <div class="meta-top" style="margin-right: 200px;">
+                    <ul>
+                      
+                      <li class="d-flex align-items-center"><i class="bi bi-person"></i> <a >Username</a></li>
+                      <li class="d-flex align-items-center"><i class="bi bi-clock"></i> <a><time datetime="2020-01-01">{{aviss.date_avis}}</time></a></li>
+                    </ul>
+                  </div>
+                   
+                </div>
+                
+                <div class="iq-card-body">
+                  <div class="about-info m-0 p-0">
+                      <div class="row">
+                       
+
+
+                          <div class="post-item">
+                              <div class="col-3">
+                                 <h4 class="card-title">{{aviss.objet}}</h4> 
+                              </div>
+                              <div class="col-3">
+                                 <h5  class="card-title" >{{aviss.description}}</h5> 
+                              </div>
+                             
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              
+              </div>  
+            </div>
+
+         
+            
+
+          </div><!-- End blog comments -->
+
+        </div>
+
+        <div class="col-lg-4">
+
+          <div class="sidebar">
+
+            <div class="sidebar-item search-form">
+              <h3 class="sidebar-title">Leave comment</h3>
+             
+            </div><!-- End sidebar search formn-->
+            <div class="sidebar-item categories">
+              <form (ngSubmit)="addAvis(covoiturage.id_cov)">
+                <div class="mt-3">
+                  <div class="row justify-content-center">
+                    <div class="col-md-6 mb-3">
+                      <div id="errorMessage" class="text-danger"></div>
+                      <input type="text" class="form-control" [(ngModel)]="avis.objet" name="objet" placeholder="Object">
+                    </div>
+                  </div>
+                  <div class="row justify-content-center">
+                    <div class="col-md-6 mb-3">
+                      <textarea type="text" class="form-control" [(ngModel)]="avis.description" name="description" placeholder="Description"></textarea>
+                    </div>
+                  </div>
+                  <div class="row justify-content-center">
+                    <div class="col-md-6 mb-3">
+                      <button style="margin-left:200px; " class="btn btn-primary" type="submit">Submit</button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+              
+              <!-- Modal -->
+              <div class="modal" *ngIf="showModal">
+                <div class="modal-content">
+                  <span class="close" (click)="closeModal()">&times;</span>
+                  <p>{{ errorMessage }}</p>
+                </div>
+              </div>
+              
+              
+              </div>
+              
+          </div><!-- End Sidebar -->
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <div class="modal" *ngIf="showModal">
+    <div class="modal-content">
+      <span class="close" (click)="closeModal()">&times;</span>
+      <p>{{ errorMessage }}</p>
+    </div>
+  </div>

@@ -1,0 +1,82 @@
+
+
+
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<body>
+  <br><br><br><br><br>
+  <div class="profile-container">
+    <div class="profile-header">
+      <h1>User Profile</h1>
+      <button class="logout-button" (click)="logout()" hidden>Logout</button>
+    
+      <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#staticdrop" (click)="openUpdateModal(user)">update profile</button>
+    </div>
+
+      <div class="profile-image">
+        <label for="fileInput" class="file-label">
+          <img [src]="user?.image" alt="user Image" class="profile-avatar">
+          <span class="file-label-text">Change </span>
+        </label>
+        <input  type="file" id="fileInput" (change)="onFileSelected($event)" accept="image/*" style="display: none;">
+      </div>
+      <div class="user-details">
+        <h2>{{ user.name }}</h2>
+        <p><i class="material-icons icon-align">mail</i> <span class="data">{{ user.email }}</span></p>
+        <p><i class="material-icons icon-align">phone</i> <span class="data">{{ user.phoneNumber }}</span></p>
+        <p><i class="material-icons icon-align">person</i> <span class="data">{{ user.role }}</span></p>
+      </div>
+    </div>
+
+
+        <!--Modal form update-->
+<div class="modal fade" id="staticdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">updateUser</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="profile-image" >
+          <img class="imgb"[src]="user?.image" alt="user Image" >
+          <br>
+          <input type="file" (change)="onFileSelected1($event)" accept="image/*">
+        </div> 
+        <br>
+        <div class="mb-3">
+          <label for="formGroupExampleInput" class="form-label">email:</label>
+          <input type="text" class="form-control" id="formGroupExampleInput" placeholder="email" [(ngModel)]="user.email">
+        </div>
+        <div class="row">
+          <div class="col">
+            username
+            <input type="text" class="form-control" placeholder="Price" aria-label="First name" [(ngModel)]="user.name">
+          </div>
+          <div class="col">
+           phone number :
+            <input type="tel" class="form-control" placeholder="Number of telephone" aria-label="Last name" [(ngModel)]="user.phoneNumber">
+          </div>
+        </div>
+      <div class="mb-3">
+        <label for="conditionSelect" class="form-label">role:</label>
+        <select class="form-select" id="conditionSelect" aria-label="Condition select" [(ngModel)]="user.role" (change)="onEtatChange($event)">
+          <option value="ADMIN">ADMIN</option>
+          <option value="USER">USER</option>
+        </select>
+      </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-success" (click)="updateUser()"  >Update</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<br><br>
+
+
+
+
+
+    

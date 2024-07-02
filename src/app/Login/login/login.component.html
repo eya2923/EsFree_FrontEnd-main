@@ -1,0 +1,59 @@
+<body>
+    <!-- loader Start -->
+
+    <!-- loader END -->
+      <!-- Sign in Start -->
+      <section class="sign-in-page">
+          <div class="container bg-white mt-5 p-0" style="  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);;">
+              <div class="row no-gutters">
+                  <div class="col-sm-6 align-self-center">
+                      <div class="sign-in-from">
+                          <h1 class="mb-0 dark-signin">Sign in</h1>
+                          <p>Enter your email address and password to access admin panel.</p>
+                          <form class="mt-4">
+                              <div class="form-group">
+                                  <label for="exampleInputEmail1" >Email address</label>
+                                  <input type="email" class="form-control mb-0" id="exampleInputEmail1" name="email" [(ngModel)]="loginObj.email" placeholder="Enter email">
+                              </div>
+                              <div class="form-group">
+                                  <label for="exampleInputPassword1" >Password</label>
+                                  <a href="#" routerLink="/forgetpwd" class="float-right">Forgot password?</a>
+                                  <input type="password" class="form-control mb-0" id="exampleInputPassword1" name="password" [(ngModel)]="loginObj.password" placeholder="Password">
+                              </div>
+                              <div class="d-inline-block w-100">
+                                  <div class="custom-control custom-checkbox d-inline-block mt-2 pt-1">
+                                      <input type="checkbox" class="custom-control-input" id="customCheck1">
+                                      <label class="custom-control-label" for="customCheck1">Remember Me</label>
+                                  </div>
+                                  <button type="submit" class="btn btn-primary float-right" (click)="login()">Sign in</button>
+                              </div>
+                              <div class="sign-info">
+                                  <span class="dark-color d-inline-block line-height-2">Don't have an account? 
+                                    <a href="#" routerLink="/signup">Sign up</a></span>
+                                  <ul class="iq-social-media">
+                                      <li><a href="#"><i class="ri-facebook-box-line"></i></a></li>
+                                      <li><a href="#"><i class="ri-twitter-line"></i></a></li>
+                                      <li><a href="#"><i class="ri-instagram-line"></i></a></li>
+                                  </ul>
+                                  
+                              </div>
+                          </form>
+                         
+                      
+                
+                      </div>
+                  </div>
+                  
+                  <div class="col-sm-6 text-center  ">
+                    <div class="sign-in-detail text-white bg-white"> <!-- Change background color to white -->
+                        <a class="sign-in-logo mb-5" href="#">
+                            <img src="/assets/BackOffice/images/esfree.png" class="img-fluid logo-img" alt="logo"> <!-- Add a class for the logo image -->
+                        </a>
+                    </div>
+                </div>
+              </div>
+          </div>
+      </section>
+      <!-- Sign in END -->
+
+ </body>

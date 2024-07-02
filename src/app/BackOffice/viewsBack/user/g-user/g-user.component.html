@@ -1,0 +1,175 @@
+<div class="iq-card-header d-flex justify-content-between">
+    <div class="iq-header-title">
+        <h4 class="card-title">Table of products</h4>
+    </div>
+  </div>
+  <div class="iq-card-body">
+
+    <div class="mb-3">
+      <input type="text" class="form-control" [(ngModel)]="searchTerm" placeholder="Search by username" (input)="filterUsers()">
+    </div>
+    
+    
+      <div id="table" class="table-editable">
+        <span class="table-add float-right mb-3 mr-2">
+         
+          <button type="button" class="btn btn-sm iq-bg-success" data-bs-toggle="modal" data-bs-target="#addUserModal">
+            <span class="pl-1">Add New User</span>
+          </button>
+        </span>
+        <table class="table table-bordered table-responsive-md table-striped text-center">
+          <thead>
+            <tr>
+              <th>id</th>
+              <th>username</th>
+              <th>mail</th>
+              <th>role</th>
+              <th>phone</th>
+              <th>image</th>
+              <th>Update</th>
+              <th>Remove</th>
+  
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let user of paginatedUsers">
+              <td>{{ user.id }}</td>
+              <td>{{ user.name }}</td>
+              <td>{{ user.email }}</td>
+              <td>{{ user.role }} </td>
+              <td>{{ user.phoneNumber }}</td>
+              <img [src]="user.image" alt="user Image" >
+              <td>
+                <span class="table-update">
+                  <i type="button"  class="ri-refresh-line text-success pr-1" data-bs-toggle="modal" data-bs-target="#staticdrop" (click)="openUpdateModal(user)"></i>
+                </span>
+              </td>
+              <td>
+                <span class="table-remove">
+                  <i class="ri-delete-bin-5-line text-danger" (click)="deleteUser(user.id)"></i>
+                </span>
+              </td>
+            </tr>
+          </tbody>
+      </table>
+      <nav>
+        <ul class="pagination justify-content-end">
+          <li class="page-item" *ngFor="let page of pages" [class.active]="page === currentPage">
+            <a class="page-link" href="javascript:void(0)" (click)="changePage(page)">{{ page }}</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+      </div>
+
+      <!--Modal form update-->
+<div class="modal fade" id="staticdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">updateUser</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="profile-image" >
+          <img [src]="user.image" alt="user Image" >
+          <br>
+          <input type="file" (change)="onFileSelected($event)" accept="image/*">
+        </div> 
+        <br>
+        <div class="mb-3">
+          <label for="formGroupExampleInput" class="form-label">email:</label>
+          <input type="text" class="form-control" id="formGroupExampleInput" placeholder="email" [(ngModel)]="user.email">
+        </div>
+        <div class="row">
+          <div class="col">
+            username
+            <input type="text" class="form-control" placeholder="Price" aria-label="First name" [(ngModel)]="user.name">
+          </div>
+          <div class="col">
+           phone number :
+            <input type="tel" class="form-control" placeholder="Number of telephone" aria-label="Last name" [(ngModel)]="user.phoneNumber">
+          </div>
+        </div>
+      <div class="mb-3">
+        <label for="conditionSelect" class="form-label">role:</label>
+        <select class="form-select" id="conditionSelect" aria-label="Condition select" [(ngModel)]="user.role" (change)="onEtatChange($event)">
+          <option value="ADMIN">ADMIN</option>
+          <option value="USER">USER</option>
+        </select>
+      </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-success" (click)="updateUser()"  >Update product</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+<!-- Modal for adding a new user -->
+<div class="modal fade" id="addUserModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addUserModalLabel">Add New User</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="profile-image">
+          <!-- Input field for uploading user image -->
+          <input type="file" (change)="onFileSelected($event)" accept="image/*">
+        </div>
+        <br>
+        <!-- Input field for user email -->
+        <div class="mb-3">
+          <label for="userEmail" class="form-label">Email:</label>
+          <input type="text" class="form-control" id="userEmail" placeholder="Enter email" [(ngModel)]="user.email">
+        </div>
+        <div class="mb-3">
+          <label for="userName" class="form-label">password:</label>
+          <input type="text" class="form-control" id="password" placeholder="Enter password" [(ngModel)]="user.password">
+        </div>
+        <!-- Input field for user name -->
+        <div class="mb-3">
+          <label for="userName" class="form-label">Username:</label>
+          <input type="text" class="form-control" id="userName" placeholder="Enter username" [(ngModel)]="user.name">
+        </div>
+        <!-- Input field for user phone number -->
+        <div class="mb-3">
+          <label for="userPhoneNumber" class="form-label">Phone Number:</label>
+          <input type="tel" class="form-control" id="userPhoneNumber" placeholder="Enter phone number" [(ngModel)]="user.phoneNumber">
+        </div>
+        <!-- Dropdown for selecting user role -->
+        <div class="mb-3">
+          <label for="conditionSelect" class="form-label">role:</label>
+          <select class="form-select" id="conditionSelect" aria-label="Condition select" [(ngModel)]="user.role" (change)="onEtatChange($event)">
+            <option value="ADMIN">ADMIN</option>
+            <option value="USER">USER</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" routerLink="users">Close</button>
+        <button type="button" class="btn btn-success" (click)="addUser()">Add User</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+ 
+
+
+
+  
+  

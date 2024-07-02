@@ -1,0 +1,37 @@
+#logo {
+    width: 250px; /* Largeur de l'icône */
+    height: 150px; /* Hauteur de l'icône */
+}
+.sidebar-content {
+    height: calc(100vh - 60px); /* Adjust height as needed, subtracting any top/bottom margins */
+    overflow-y: auto; /* Enable scrolling */
+    position: relative; /* Ensure z-index works */
+}
+
+.sidebar-content::-webkit-scrollbar {
+    width: 0; /* Hide the scrollbar on WebKit browsers (Chrome, Safari, etc.) */
+}
+
+/* Create an invisible scrollbar track */
+.sidebar-content::-webkit-scrollbar-track {
+    background-color: transparent;
+    border: none;
+}
+
+/* Create an invisible scrollbar thumb */
+.sidebar-content::-webkit-scrollbar-thumb {
+    background-color: transparent;
+    border: none;
+}
+
+/* Create an overlay to cover the scrollbar */
+.sidebar-content::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 10px; /* Adjust as needed to cover the scrollbar width */
+    background: linear-gradient(to right, transparent, transparent 10px, white); /* Match the background color */
+    z-index: 1; /* Ensure the overlay is above the scrollbar */
+}

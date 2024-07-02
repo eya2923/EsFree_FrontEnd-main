@@ -1,0 +1,4 @@
+.location-info {
+    display: flex;
+    align-items: center; /* Pour aligner les éléments verticalement au centre */
+}

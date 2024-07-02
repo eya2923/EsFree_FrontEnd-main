@@ -1,0 +1,38 @@
+/* CSS pour styliser le tableau */
+.table {
+    width: 100%;
+    max-width: 900px;
+    border-collapse: collapse;
+    margin: 20px auto; /* Centrer le tableau horizontalement */
+  }
+  
+  .table th,
+  .table td {
+    padding: 15px;
+    text-align: center;
+  }
+  
+  .table th {
+    background-color: #e84545; /* Couleur de fond pour les en-têtes de colonnes */
+    color: #fff; /* Couleur du texte pour les en-têtes de colonnes */
+  }
+  
+  .table td {
+    border-bottom: 1px solid #ddd;
+  }
+  
+  /* CSS pour styliser les icônes d'action */
+  .action-icon {
+    cursor: pointer;
+    margin: 0 5px;
+    font-size: 1.2rem; /* Taille de police des icônes */
+  }
+  
+  .edit-icon {
+    color: #007bff; /* Couleur bleue pour l'icône d'édition */
+  }
+  
+  .delete-icon {
+    color: #dc3545; /* Couleur rouge pour l'icône de suppression */
+  }
+  

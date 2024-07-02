@@ -1,0 +1,102 @@
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <div class="container-fluid">
+       <div class="row">
+          <div class="col-sm-12">
+                <div class="iq-card">
+                   <div class="iq-card-header d-flex justify-content-between">
+                      <div class="iq-header-title">
+                         <h4 class="card-title">Events List</h4>
+                      </div>
+                   </div>
+                   <div class="iq-card-body">
+                      <div class="table-responsive">
+                         <div class="row justify-content-between">
+                            <div class="col-sm-12 col-md-6">
+                               <div id="user_list_datatable_info" class="dataTables_filter">
+                                  <form class="mr-3 position-relative">
+                                  </form>
+                               </div>
+                            </div>
+                         </div>
+                         <div class="search-container mb-4 d-flex align-items-center">
+                           <input type="text" [(ngModel)]="searchTerm" placeholder="Search by Event planner..." (input)="searchEvents()" class="form-control col-4">
+                           <input type="date" [(ngModel)]="searchDate" (change)="filterEventsByDate()" class="form-control mr-3" placeholder="Enter start date...">
+                           <button class="btn btn-primary" (click)="resetFilters()">All Events</button>
+                         </div>
+                         <table id="user-list-table" class="table table-striped table-borderless mt-4" role="grid" aria-describedby="user-list-page-info">
+                           <thead>
+                               <tr>
+                                  <th>Name</th>
+                                  <th>Organizer</th>
+                                  <th>Location</th>
+                                  <th>Start Date</th>
+                                  <th>End Date</th>
+                                  <th>
+                                    Price
+                                    <button class="sort-button" (click)="sortEventsByPrice()">
+                                      <span class="button-content">
+                                        <i class="material-icons">{{ ascendingOrder ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</i>
+                                      </span>
+                                    </button>
+                                  </th>
+                                  <th>Capacity</th>
+                                  <th>Status</th>
+                                  <th>Action</th>
+                               </tr>
+                           </thead>
+                         <tbody>
+                           <tr *ngFor="let event of filteredEvents">
+                                          <td>{{ event.nomEvent }}</td>
+                                          <td>{{ event.organisateurEvent }}</td>
+                                          <td>{{ event.lieuEvent }}</td>
+                                          <td>{{ event.dateDebutEvent }}</td>
+                                          <td>{{ event.dateFinEvent }}</td>
+                                          <td>{{ event.prixEvent }}</td>
+                                          <td>{{ event.capaciteEvent }}</td>
+                                          <td>
+                                             <span [ngClass]="{ 
+                                             'badge': true, 
+                                             'dark-icon-light': true, 
+                                             'iq-bg-primary': true, 
+                                             'badge-pending': event.statut === 'En attente', 
+                                             'badge-approved': event.statut === 'Approuvé', 
+                                             'badge-rejected': event.statut === 'Rejeté', 
+                                             'text-white': event.statut === 'En attente' || event.statut === 'Approuvé' || event.statut === 'Rejeté'
+                                             }">
+                                             {{ event.statut === 'En attente' ? 'Pending' : event.statut === 'Approuvé' ? 'Approved' : 'Rejected' }}
+                                             </span>
+                                          </td>
+                                          <td>
+                                             <div class="flex align-items-center list-user-action">
+                                             <ng-container *ngIf="event.statut === 'En attente'">
+                                                <!-- Utilisez la méthode approveEvent créée dans le composant Angular -->
+                                                <a class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title="Approve" (click)="approveEvent(event)"><i class="ri-check-line"></i></a>
+                                             </ng-container>
+                                             <ng-container *ngIf="event.statut === 'En attente'">
+                                                <a class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title="Reject" (click)="rejectEvent(event)"><i class="ri-close-line"></i></a>
+                                             </ng-container>
+                                             </div>
+                                          </td>
+                                 </tr>
+                           </tbody>
+                         </table>
+                      </div>
+                         <div class="row justify-content-between mt-3">
+                           <div id="user-list-page-info" class="col-md-6">
+                              <span>Showing {{ startIndex + 1 }} to {{ endIndex }} of {{ totalEvents }} entries</span>
+                            </div>
+                            <div class="col-md-6">
+                              <nav aria-label="Page navigation">
+                                 <ul class="pagination justify-content-end red-pagination"> <!-- Ajoutez la classe red-pagination ici -->
+                                    <li class="page-item" *ngFor="let page of pages" [class.active]="page === currentPage">
+                                      <a class="page-link" href="javascript:void(0)" (click)="changePage(page)">{{ page }}</a>
+                                    </li>
+                                  </ul>
+                               </nav>
+                            </div>
+                         </div>
+                   </div>
+                </div>
+          </div>
+       </div>
+    </div>

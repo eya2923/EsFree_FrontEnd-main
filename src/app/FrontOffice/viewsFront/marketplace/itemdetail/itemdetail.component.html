@@ -1,0 +1,82 @@
+<br><br><br><br><br><br>
+<div style="display: flex; justify-content: center;">
+<div class="iq-card-body "  style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); width: 80%;">
+    <div class="row align-items-center justify-content-center">
+        <div class="col-md-5 iq-item-product-left ">
+            <div class="h-56 d-flex align-items-center justify-content-center mb-4">
+                <img [src]="pubItem.image" class="grid-view-img" >
+            </div>
+        </div>
+        <div class="col-md-7 iq-item-product-right">
+            <div class="product-additional-details">
+                <h4 class="productpage_title">{{ pubItem.name }}</h4>
+                    <div class="product-price">
+                        <div class="regular-price">
+                            <b>{{ pubItem.prix }} Dt</b> 
+                        </div>
+                    </div>
+                    <div class="stock">
+                        <p>Etat: <span class="text-success">{{pubItem.etat}}</span></p>
+                    </div>
+                    <div class="stock">
+                        <p>Posted in: <span class="text">{{ pubItem.datePost | date: 'medium' }}</span></p>
+                    </div>
+                    <br><br>
+                    <div class="additional-product-action d-flex align-items-center">
+                        <div class="product-action">
+                        <div class="add-to-cart">
+                            <button type="button" class="btn btn-outline-danger" *ngIf="pubItem.id_pub !== undefined"  (click)="addToCart(pubItem.id_pub)" >
+                                <i class="ri-shopping-cart-line "></i> Add to Cart </button>
+                            </div>
+                            <div class="add-to-cart">
+                                <button type="button" class="btn btn-outline-success" style="margin-left: 10px;" routerLink="/cartf">
+                                    <i class="ri-shopping-cart-line "></i> view cart </button>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 product-description-details mt-4">
+                <div class="description-tabs">
+                    <div class="tabs" id="__BVID__626"><!----><div class="">
+                        <ul role="tablist" class="nav nav-tabs justify-content-center" id="__BVID__626__BV_tab_controls_"><!---->
+                            <li role="presentation" class="nav-item">
+                                <a role="tab" aria-selected="true" aria-setsize="3" aria-posinset="1" href="#" target="_self" class="nav-link active" id="__BVID__627___BV_tab_button__" aria-controls="__BVID__627">Description</a>
+                            </li>
+                           </ul>
+                        </div>
+                        <div class="tab-content mt-3" id="__BVID__626__BV_tab_container_">
+                            <div role="tabpanel" aria-hidden="false" class="tab-pane active" id="__BVID__627" aria-labelledby="__BVID__627___BV_tab_button__">
+                                <p>{{ pubItem.description }}</p>
+                            </div>
+                            <div role="tabpanel" aria-hidden="true" class="tab-pane" style="display: none;" id="__BVID__629" aria-labelledby="__BVID__629___BV_tab_button__"><p>Lorem ipsum dolor sit amet, consect</p>
+                            </div>
+                           </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+
+<div class="container mt-5" style="margin-left:160px;">
+    <h4>Other items with the same price:</h4>
+    <br>
+    <div class="row">
+      <div class="col-md-3 mb-4" *ngFor="let item of samePriceItems">
+        <div class="card custom-card">
+          <img [src]="item.image" class="card-img-top custom-card-img" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">{{ item.name }}</h5>
+            <p class="card-text">{{ item.description }}</p>
+            <button type="button" class="btn btn-outline-danger" *ngIf="pubItem.id_pub !== undefined"  (click)="addToCart(pubItem.id_pub)" >
+                <i class="ri-shopping-cart-line "></i></button>
+                <button type="button" class="btn btn-outline-success" style="margin-left: 10px;" routerLink="/cartf">
+                    <i class="las la-eye"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+                    <br><br>

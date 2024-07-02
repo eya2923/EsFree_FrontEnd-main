@@ -1,0 +1,124 @@
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<br>
+<br>
+<main id="main">
+    <!-- Blog Details Page Title & Breadcrumbs -->
+    <div class="page-title">
+      <div class="heading">
+        <div class="container">
+          <div class="row d-flex justify-content-center text-center">
+            <div class="col-lg-8">
+              <h1>Event Details</h1>
+              <p class="mb-0">Dive into the dynamic world of Esprit University's events, where a kaleidoscope of enriching experiences awaits. From thought-provoking lectures to lively cultural celebrations, our diverse calendar offers something for every curious mind and spirited soul. Join us as we embrace learning, foster connections, and create unforgettable moments together.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <nav class="breadcrumbs">
+        <div class="container">
+          <ol>
+            <li><a href="index.html">Home</a></li>
+            <li class="current">Event Details</li>
+          </ol>
+        </div>
+      </nav>
+    </div><!-- End Page Title -->
+    <!-- Blog-details Section - Blog Details Page -->
+    <section id="blog-details" class="blog-details" >
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <div class="row g-5" *ngIf="event">
+          <div class="col-lg-8">
+            <article class="article">
+              <div class="post-img">
+                <img [src]="event.imageEvent" alt="Event Image" class="img-fluid"  style="width: 100%;  max-width: 600px; max-height: 500px;">
+              </div>
+              <h2 class="title">{{ event.nomEvent }}</h2>
+              <div class="meta-top">
+                <ul>
+                  <li class="d-flex align-items-center"><i class="bi bi-person"></i> <a href="blog-details.html">{{ event.organisateurEvent }}</a></li>
+                  <li class="d-flex align-items-center"><i class="bi bi-clock"></i> <a href="blog-details.html"><time>{{ event.dateDebutEvent }}</time> - <time>{{ event.dateFinEvent }}</time></a></li>
+                  <li class="d-flex align-items-center">
+                    <i class="material-icons">monetization_on</i>
+                    <ng-container *ngIf="event.prixEvent === 0; else showPrice">{{ 'Gratuit' }}</ng-container>
+                    <ng-template #showPrice><a href="blog-details.html">{{ event.prixEvent }} Dt</a></ng-template>
+                </li>                
+                </ul>
+              </div><!-- End meta top -->
+
+              <div class="content">
+                <div class="location-info d-flex align-items-center">
+                    <div class="mr-1">
+                        <i class="material-icons" style="font-size: 24px;">place</i>
+                    </div>
+                    <div>
+                        <p style="margin-bottom: 0;">{{ event.lieuEvent }}</p>
+                    </div>
+                </div>
+                <blockquote>
+                    <p>{{ event.descriptionEvent }}</p>
+                </blockquote>
+            </div><!-- End post content -->
+            
+            </article><!-- End post article -->
+            
+          </div>
+
+          <div class="col-lg-4">
+            <div class="sidebar" class="row d-flex justify-content-center text-center">
+                <div *ngIf="qrCodeUrl">
+                    <img [src]="qrCodeUrl" alt="QR Code">
+                    <div class="qr-code-info">
+                        <h3>Save the Event</h3>
+                        <p class="qr-code-description">
+                            Don't miss out on this exciting event! Scan the QR code with your smartphone to save it to your calendar and stay updated.
+                        </p>
+                        <p class="qr-code-description">
+                            Want to join? Go ahead and participate!
+                        </p>
+                        <div class="qr-code-cta">
+                          <button (click)="openParticipationModal()"class="btn btn-primary ml-3" [disabled]="event.capaciteEvent === 0" [ngClass]="{ 'disabled-button': event.capaciteEvent === 0 }">
+                            {{ event.capaciteEvent === 0 ? 'Event complete' : 'Participate' }}
+                          </button>
+                          
+                        </div>
+                        <div class="modal fade" id="participationModal" tabindex="-1" aria-labelledby="participationModalLabel" aria-hidden="true">
+                          <div class="modal-dialog">
+                              <div class="modal-content">
+                                  <div class="modal-header">
+                                      <h5 class="modal-title" id="participationModalLabel">Participate</h5>
+                                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                  </div>
+                                  <div class="modal-body">
+                                      <!-- Your participation form content here -->
+                                      <form (ngSubmit)="submitParticipationForm()">
+                                          <!-- Form fields -->
+                                          <div class="mb-3">
+                                              <label for="numtel" class="form-label">Phone Number</label>
+                                              <input type="number" class="form-control" id="numtel" [(ngModel)]="participation.numtel" name="numtel" required>
+                                          </div>
+                                          <div class="mb-3">
+                                              <label for="email" class="form-label">Email address</label>
+                                              <input type="email" class="form-control" id="email" [(ngModel)]="participation.email" name="email" required>
+                                          </div>
+                                          <div class="mb-3">
+                                              <label for="nbPlace" class="form-label">Number of Places</label>
+                                              <input type="number" class="form-control" id="nbPlace" [(ngModel)]="participation.nbPlace" name="nbPlace" required>
+                                          </div>
+                                          <!-- Add more fields as needed -->
+                                          <button type="submit" class="btn btn-primary">Submit</button>
+                                      </form>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                    </div>
+                </div>
+            </div><!-- End Sidebar -->
+        </div>
+        
+        
+
+        </div>
+      </div>
+    </section><!-- End Blog-details Section -->
+  </main>

@@ -1,0 +1,115 @@
+
+
+<div class="container-fluid">
+   <div class="row">
+       <div class="col-sm-12">
+           <div class="iq-card">
+               <div class="iq-card-header d-flex justify-content-between">
+                   <div class="iq-header-title">
+                       <h4 class="card-title">Games List</h4>
+                   </div>
+               </div>
+               <div class="iq-card-body">
+                   <div class="table-responsive">
+                       <div class="row justify-content-between">
+                           <div class="col-sm-12 col-md-6">
+                               <div id="user_list_datatable_info" class="dataTables_filter">
+                                   <form class="mr-3 position-relative">
+                                       <div class="form-group mb-0">
+                                           <input type="text"  [(ngModel)]="searchText" class="form-control" name="searchText" id="exampleInputSearch" placeholder="Search" aria-controls="user-list-table">
+
+                                       </div>
+                                   </form>
+                               </div>
+                           </div>
+                       </div>
+                       <table id="user-list-table" class="table table-striped table-borderless mt-4" role="grid" aria-describedby="user-list-page-info">
+                           <thead>
+                               <tr>
+                                   <th>Name</th>
+                                   <th>Type</th>
+                                   <th>Edit</th>
+                                   <th>Delete</th>
+                               </tr>
+                           </thead>
+                           <tbody>
+                               <tr *ngFor="let game of games | filter:searchText">
+                                   <td>{{ game.nom }}</td>
+                                   <td>{{ game.typeJeux }}</td>
+                                   <td>
+                                    <button type="button" class="btn btn-outline-success mb-3" (click)="OpenEditModalGame(game.idJeux)" data-toggle="modal" data-toggle="modal" data-target="#myModalUpdate">Edit</button>
+                                   </td>
+                                   <td>
+                                    <button type="button" class="btn btn-outline-danger mb-3" (click)="deleteGame(game.idJeux)">Delete</button>
+                                   </td>
+                                  
+                               </tr>
+                           </tbody>
+                       </table>
+                   </div>
+                   <div class="row justify-content-between mt-3">
+                       <div id="user-list-page-info" class="col-md-6">
+                           <span>Showing 1 to 5 of 5 entries</span>
+                       </div>
+                       <div class="col-md-6">
+                           <nav aria-label="Page navigation example">
+                               <ul class="pagination justify-content-end mb-0">
+                                   <li class="page-item disabled">
+                                       <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                                   </li>
+                                   <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                   <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                   <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                   <li class="page-item">
+                                       <a class="page-link" href="#">Next</a>
+                                   </li>
+                               </ul>
+                           </nav>
+                       </div>
+                   </div>
+               </div>
+           </div>
+       </div>
+   </div>
+</div>
+
+
+<!-- Pop-Up pour modifier une maison -->
+<div class="modal fade" id="myModalUpdate" role="dialog" *ngIf="showUpdateDialog" >
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title">Edit Game</h2>
+        </div>
+        <div class="modal-body">
+          <form (ngSubmit)="updateGame()" #taskForm="ngForm">
+            <div class="form-group">
+                <label for="nom">Game Name :</label>
+                <input type="text" id="adresse" [(ngModel)]="newGame.nom" name="nom" class="form-control" required minlength="4">
+                <div *ngIf="taskForm.controls['nom'].invalid && (taskForm.controls['nom'].dirty || taskForm.controls['nom'].touched)">
+                    <div class="text-danger" *ngIf="taskForm.controls['nom'].errors?.['required']">Please insert name</div>
+                    <div class="text-danger" *ngIf="taskForm.controls['nom'].errors?.['minlength']">Name Should have more than 4 characters</div>
+                </div>
+            </div>
+            <br>
+            <div class="form-group">
+                <label for="typeJeux">Game Type :</label>
+                <input type="text" id="typeJeux" [(ngModel)]="newGame.typeJeux" name="typeJeux" class="form-control" required minlength="5">
+                <div *ngIf="taskForm.controls['typeJeux'].invalid && (taskForm.controls['typeJeux'].dirty || taskForm.controls['typeJeux'].touched)">
+                    <div class="text-danger" *ngIf="taskForm.controls['typeJeux'].errors?.['required']">Veuillez insérer la description.</div>
+                    <div class="text-danger" *ngIf="taskForm.controls['typeJeux'].errors?.['minlength']">La description doit contenir au moins 5 caractères.</div>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" [disabled]="taskForm.invalid">Edit Game</button>
+                <button type="button" class="btn btn-secondary btn-default" data-dismiss="modal">Cancel</button>
+            </div>
+        </form>
+        </div>
+      </div>
+      
+    </div>
+  </div>

@@ -1,0 +1,32 @@
+<br>
+<br>
+<br>
+<br>
+<br>
+<div *ngIf="contrats.length > 0">
+    <h2>Liste des contrats </h2>
+    <div class="row">
+      <ng-container *ngFor="let contrat of contrats; let i = index">
+        <ng-container *ngIf="contrat.colocataires && contrat.colocataires.length > 0">
+          <div class="col-lg-4 col-md-6 col-sm-12">
+            <div class="card mb-3">
+              <div class="card-body">
+                <h5 class="card-title">Contrat Num: {{ contrat.id_contrat }}</h5>
+                <p class="card-text">Date de début: {{ contrat.date_debut }}</p>
+                <p class="card-text">Date de fin: {{ contrat.date_fin }}</p>
+                <ul class="list-group">
+                  <li *ngFor="let colocataire of contrat.colocataires">
+                    Le Colocataire : {{ colocataire.name }}
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <!-- Ajouter un saut de ligne après chaque troisième contrat -->
+        <div *ngIf="(i + 1) % 3 === 0" class="w-100"></div>
+      </ng-container>
+    </div>
+  </div>
+  
+  

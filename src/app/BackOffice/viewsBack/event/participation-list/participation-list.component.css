@@ -1,0 +1,12 @@
+.red-pagination .page-link {
+    color: rgb(220, 201, 201); /* Définissez la couleur du texte en rouge */
+  }
+  
+  .red-pagination .page-link:hover {
+    background-color: #ffcccc; /* Définissez la couleur de fond au survol */
+  }
+  
+  .red-pagination .page-item.active .page-link {
+    background-color: #e84545; /* Définissez la couleur de fond de l'élément actif en rouge */
+    border-color: #e84545; /* Définissez la couleur de la bordure en rouge pour l'élément actif */
+  }

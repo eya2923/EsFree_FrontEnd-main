@@ -1,0 +1,51 @@
+<body>
+    <!-- loader Start -->
+
+    <!-- loader END -->
+      <!-- Sign in Start -->
+      <section class="sign-in-page">
+          <div class="container bg-white mt-5 p-0">
+              <div class="row no-gutters">
+                  <div class="col-sm-6 align-self-center">
+                      <div class="sign-in-from">
+                          <h1 class="mb-0 dark-signin">Forget you password?</h1>
+                          <p>Enter your email address and password to get a new password</p>
+                          <form class="mt-4">
+                              <div class="form-group">
+                                  <label for="exampleInputEmail1" >Email address</label>
+                                  <input type="email" class="form-control mb-0" id="exampleInputEmail1" name="email" [(ngModel)]="email"  placeholder="Enter email">
+                              </div>
+
+                              <div class="d-inline-block w-100">
+                                  <button type="submit" class="btn btn-primary float-right" (click)="forgotPassword()" >Reset your password</button>
+                              </div>
+                              <div class="sign-info">
+                            
+                                    <a href="#" routerLink="">Sign in</a>
+                                  <ul class="iq-social-media">
+                                      <li><a href="#"><i class="ri-facebook-box-line"></i></a></li>
+                                      <li><a href="#"><i class="ri-twitter-line"></i></a></li>
+                                      <li><a href="#"><i class="ri-instagram-line"></i></a></li>
+                                  </ul>
+                                  
+                              </div>
+                          </form>
+                         
+                      
+                
+                      </div>
+                  </div>
+                  
+                  <div class="col-sm-6 text-center bg-white mt-5 p-0">
+                    <div class="sign-in-detail text-white bg-white"> <!-- Change background color to white -->
+                        <a class="sign-in-logo mb-5" href="#">
+                            <img src="/assets/BackOffice/images/esfree.png" class="img-fluid logo-img" alt="logo"> <!-- Add a class for the logo image -->
+                        </a>
+                    </div>
+                </div>
+              </div>
+          </div>
+      </section>
+      <!-- Sign in END -->
+
+ </body>

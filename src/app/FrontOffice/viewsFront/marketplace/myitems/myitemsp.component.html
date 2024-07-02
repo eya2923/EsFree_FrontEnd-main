@@ -1,0 +1,151 @@
+<br><br><br><br><br>
+<!--div class="container">
+  <div class="row">
+      <div class="card" style="width: 18rem;">
+          <img src="..." class="card-img-top" alt="...">
+          <div class="card-body">
+              <h5 class="card-title">Card title</h5>
+              <a href="#" class="btn btn-primary">Go somewhere</a>
+          </div>
+      </div>
+    </div>
+  </div!-->
+
+  <div class="container">
+    <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#addProductModal">Add Product</button>
+
+    <div class="gallery">
+      <div class="content" *ngFor="let item of pubItems">
+        <img [src]="item.image" alt="Product Image">
+        <h3>{{ item.name }}</h3>
+        <h6>{{ item.prix}} dt</h6>
+        <br>
+        <br>
+        <div class="icons">
+          <i type="button"  class="ri-refresh-line text-success pr-1" data-bs-toggle="modal" data-bs-target="#staticdrop" (click)="openUpdateModal(item)"></i>
+          <a><i class="ri-delete-bin-5-line text-danger" (click)="deleteItem(item.id_pub || -1)"></i></a>
+        </div>
+      </div>
+    </div>
+
+    
+  </div>
+
+
+
+
+
+
+
+  <div class="modal fade" id="staticdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Update a product</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label for="formGroupExampleInput" class="form-label">Name of the product:</label>   
+          <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Name" [(ngModel)]="pubItem.name" name="name" required #name="ngModel">
+
+        <div class="row">
+          <div class="col">
+            <label for="priceInput" class="form-label">Price of the product:</label>
+            <input type="number" class="form-control" id="priceInput" placeholder="Price" aria-label="Price" [(ngModel)]="pubItem.prix" name="price" required #price="ngModel" >
+          </div>
+          <div class="col">
+            <label for="phoneInput" class="form-label">Phone number:</label>
+            <input type="text" class="form-control" id="phoneInput" placeholder="Number of telephone" aria-label="Phone number" [(ngModel)]="pubItem.numTelephone" name="phoneNumber" pattern="[0-9]{8}" required #phone="ngModel">
+
+          </div>
+        </div>
+<br>
+        <div class="mb-3">
+          <label for="exampleFormControlTextarea1" class="form-label">Description: </label>
+          <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" [(ngModel)]="pubItem.description"></textarea>
+        </div>
+        
+        <!--div class="mb-3 custom-file">
+          Upload image of the product: 
+          <label for="imageUpload" class="form-label">Image of the product</label>
+          <input type="file" class="custom-file-input" id="imageUpload" accept="image/*">
+          <label class="custom-file-label" for="imageUpload">Choose file</label>
+      </div-->
+
+      <div class="mb-3">
+        <label for="conditionSelect" class="form-label">Condition of the product:</label>
+        <select class="form-select" id="conditionSelect" aria-label="Condition select" [(ngModel)]="selectedEtat" (change)="onEtatChange($event)">
+          <option *ngFor="let etat of etatOptions" [value]="etat">{{ etat }}</option>
+        </select>
+      </div>
+      </div>
+
+      <div class="modal-footer" style="padding-top: 0;">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-success" (click)="updateProduct()">Update product</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+
+<div class="modal fade" id="addProductModal" [class.show]="" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addProductModalLabel">Add New Product</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Form for adding a new product -->
+        <form (ngSubmit)="onSubmit()">
+          <div class="mb-3">
+            <label for="formGroupExampleInput" class="form-label">Name of the product:</label>   
+            <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Name" [(ngModel)]="pubItem.name" name="name" required #name="ngModel">
+            <div *ngIf="name.invalid && (name.dirty || name.touched)" class="text-danger">
+              <div *ngIf="name.errors?.['required']">
+                Name is required.
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <label>Description:</label>
+            <input type="text" class="form-control" id="formGroupExampleInput" [(ngModel)]="pubItem.description" name="description" required>
+          </div>
+          <div>
+            <label for="priceInput" class="form-label">Price of the product:</label>
+            <input type="number" class="form-control" id="priceInput" placeholder="Price" aria-label="Price" [(ngModel)]="pubItem.prix" name="price" required #price="ngModel" [min]="0.01">
+            <div *ngIf="price.invalid && (price.dirty || price.touched)" class="text-danger">
+              <div *ngIf="price.errors?.['required']">
+                Price is required.
+              </div>
+              <div *ngIf="price.errors?.['min']">
+                Price must be greater than 0.
+              </div>
+            </div>
+          </div>
+          <div>
+            <label>Telephone Number:</label>
+            <input type="text" class="form-control" id="formGroupExampleInput" [(ngModel)]="pubItem.numTelephone" name="numTelephone" required pattern="[0-9]{10}">
+          </div>
+          <div>
+            <label>Choose Image:</label> <!-- Updated label -->
+            <input type="file" (change)="onFileChange($event)" name="image" accept="image/*" required>
+          </div>
+          <br>
+          <div class="mb-3">
+            <label for="conditionSelect" class="form-label">Condition of the product:</label>
+            <select class="form-select" id="conditionSelect" aria-label="Condition select" [(ngModel)]="selectedEtat" (change)="onEtatChange($event)">
+              <option *ngFor="let etat of etatOptions" [value]="etat">{{ etat }}</option>
+            </select>
+          </div>
+          <br>
+          <button type="submit" class="btn btn-success">Add Product</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

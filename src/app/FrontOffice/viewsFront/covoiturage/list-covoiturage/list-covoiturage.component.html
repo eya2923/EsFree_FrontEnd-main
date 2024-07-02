@@ -1,0 +1,113 @@
+
+<br>
+
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<main id="main">
+    <!-- Blog Page Title & Breadcrumbs -->
+    <div data-aos="fade" class="page-title">
+      <div class="heading">
+        <div class="container">
+          <div class="row d-flex justify-content-center text-center">
+            <div class="col-lg-8">
+              <h1>Carpooling</h1>
+              <p class="mb-0">Embark on a journey of convenience and sustainability with Esprit University's carpooling feature. Join our dynamic carpooling community, where every ride is an opportunity for adventure and connection. From daily commutes to special events, our carpooling platform offers a seamless way to share rides and reduce your carbon footprint.</p>
+            </div>
+            <div class="text-center mt-4">
+               <button class="btn btn-primary btn-lg" (click)="ajouterCovoiturage()">add carpooling </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-8">
+      <div class="search-container mb-4 d-flex align-items-center">
+        <input type="text" [(ngModel)]="searchTerm" (input)="searchCov()" placeholder="Search for your destination ..."  class="form-control col-4"> &nbsp;&nbsp;&nbsp;
+        <button class="btn btn-primary" (click)="loadCovoiturages()"> reset List</button>
+      </div>
+      </div>
+<section id="blog" class="blog">
+
+   <div class="container aos-init aos-animate" data-aos="faded-up" data-aos-delay="100">
+
+     <div class="row gy-4 posts-list">
+
+       <div class="col-xl-4 col-lg-6" *ngFor="let type of covoiturages">
+         <article class="zoom">
+          <div class="d-flex align-items-center">
+            <div class="post-meta d-flex align-items-center">
+              <img class="profile-pic img-fluid" src="/assets/BackOffice/images/user/01.jpg" alt="profile-pic">
+              <div class="ml-3">
+                  <p class="post-author">Username</p>
+                  <li class="d-flex align-items-center"><i class="bi bi-clock"></i> <a><time datetime="2020-01-01">{{type.date_depart}}</time></a></li>
+
+              </div>
+          </div>
+          
+            
+          </div>
+           
+         
+
+           <h2 class="title">
+             <a >From {{type.lieu_depart}} to {{type.destination}}</a> 
+
+           </h2>
+          <!--<div class="post-meta">
+            <button class="btn btn-primary btn-lg"  data-toggle="modal" data-toggle="modal" data-target="#myModal" (click)="openDialog(type.lieu_depart)">View on Map </button>
+           </div>
+           --> 
+
+           
+           <div class="post-meta">
+            <button style="margin-left: 280px;" class="btn btn-primary btn-lg"  (click)="navigateToCovDetail(type.id_cov)">View Carpooling</button>
+           </div>
+           
+           
+         <!--  <ul class="post-comments p-0 m-0">
+            <li class="mb-2">
+               <div   *ngFor="let aviss of listavisCov[type.id_cov]" class="d-flex flex-wrap">
+                 
+                 <div>
+                  <div class="comment-data-block ml-3">
+                   
+                     <p class="mb-0">{{aviss.objet}}</p>
+                     <h6>{{aviss.description}}</h6>
+                     <div class="d-flex flex-wrap align-items-center comment-activity">
+                        <a href="javascript:void();">like</a>
+                     </div>
+                  </div>
+               </div>
+               </div>
+            </li>
+            
+         </ul>
+         <form class="comment-text d-flex align-items-center mt-3" (ngSubmit)="submitAvis()" #avisForm="ngForm">
+          <input type="text" class="form-control rounded" placeholder="Add a notice!" name="description" ngModel required>
+          <div class="comment-attagement d-flex">
+            
+          </div>
+          <button type="submit" class="btn btn-primary">Add Notice</button>
+        </form>
+ -->
+         </article>
+       </div>
+     
+     
+    
+       
+       
+      
+     </div><!-- End blog posts list -->
+     
+<!-- End pagination -->
+
+   </div>
+
+ </section>
+
+
+
+
+ 
+
+ 

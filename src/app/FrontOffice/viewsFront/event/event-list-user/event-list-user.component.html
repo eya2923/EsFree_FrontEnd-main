@@ -1,0 +1,162 @@
+<br>
+<br>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<main id="main">
+    <!-- Blog Page Title & Breadcrumbs -->
+    <div data-aos="fade" class="page-title">
+      <div class="heading">
+        <div class="container">
+          <div class="row d-flex justify-content-center text-center">
+            <div class="col-lg-8">
+              <h1>Events</h1>
+              <p class="mb-0">Dive into the dynamic world of Esprit University's events, where a kaleidoscope of enriching experiences awaits. From thought-provoking lectures to lively cultural celebrations, our diverse calendar offers something for every curious mind and spirited soul. Join us as we embrace learning, foster connections, and create unforgettable moments together.</p>
+            </div>
+            <div class="text-center mt-4">
+              <button class="btn btn-primary btn-lg" (click)="addevent()">Add your Event</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <nav class="breadcrumbs">
+        <div class="container">
+          <ol>
+            <li><a href="index.html">Home</a></li>
+            <li class="current">Events</li>
+          </ol>
+        </div>
+      </nav>
+    </div><!-- End Page Title -->
+    <section id="blog" class="blog">
+        <div class="container" data-aos="fade-up" data-aos-delay="100">
+          <div class="row gy-4 posts-list">
+            <div class="col-xl-4 col-lg-6" *ngFor="let event of userEvents">
+              <article>
+                <div class="post-img">
+                  <img [src]="event.imageEvent" alt="Event Image" style="max-width: 100%; height: auto;">
+                </div>
+                <div class="d-flex align-items-center">
+                  <!-- Contenu de l'événement -->
+                  <div class="w-100">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <!-- Titre de l'événement -->
+                      <div>
+                        <p class="post-category">{{ event.organisateurEvent }}</p>
+                        <h2 class="title" (click)="navigateToEventDetail(event.idEvent)">
+                          <span style="cursor: pointer;">{{ event.nomEvent }}</span>
+                        </h2>
+                      </div>
+                      <!-- Icônes d'édition et de suppression de l'événement -->
+                      <div class="ml-auto">
+                        <i class="material-icons mr-2" (click)="openEditEventModal(event.idEvent)"  style="cursor: pointer;">edit</i>
+                        <i class="material-icons" (click)="deleteEvent(event.idEvent)"  style="cursor: pointer;">delete</i>
+                      </div>
+                    </div>
+                    <div class="d-flex align-items-center">
+                      <!-- Ligne supérieure avec lieu et icône de localisation -->
+                      <div class="mr-1">
+                        <i class="material-icons" style="font-size: 24px;">place</i>
+                      </div>
+                      <div class="post-meta">
+                        <p class="post-author mb-0">{{ event.lieuEvent }}</p>
+                      </div>
+                    </div>
+                    <!-- Ligne inférieure avec les dates et l'icône du calendrier -->
+                    <div class="d-flex align-items-center">
+                      <div class="mr-1">
+                        <i class="material-icons" style="font-size: 24px;">date_range</i>
+                      </div>
+                      <div class="post-meta">
+                        <p class="post-date mb-0">
+                          <time>{{ event.dateDebutEvent | date: 'mediumDate' }}</time> - <time>{{ event.dateFinEvent | date: 'mediumDate' }}</time>
+                        </p>
+                      </div>
+                    </div>
+                    <div>
+                      <span [ngClass]="{
+                        'badge': true,
+                        'badge-pending': event.statut === 'En attente',
+                        'badge-rejected': event.statut === 'Rejeté',
+                        'badge-approved': event.statut === 'Approuvé'
+                      }">{{ event.statut }}</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal fade" id="editEventModal" tabindex="-1" aria-labelledby="editEventModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="editEventModalLabel">Edit</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <!-- Your participation form content here -->
+                                <form (ngSubmit)="editEvent()" class="row">
+                                    <!-- Première colonne -->
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="nomEvent" class="form-label">Name</label>
+                                            <input type="text" [(ngModel)]="selectedEvent && selectedEvent.nomEvent"  name="nomEvent" class="form-control" placeholder="Event Name" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="dateDebutEvent" class="form-label">Start Date</label>
+                                            <input type="date" [(ngModel)]="selectedEvent && selectedEvent.dateDebutEvent" name="dateDebutEvent" class="form-control" placeholder="Start Date" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="prixEvent" class="form-label">Price</label>
+                                            <input type="number" [(ngModel)]="selectedEvent && selectedEvent.prixEvent" name="prixEvent" class="form-control" placeholder="Price" required>
+                                        </div>
+                                       
+                                        <!-- Ajoutez plus de champs au besoin -->
+                                    </div>
+                                    <!-- Deuxième colonne -->
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <div class="mb-3">
+                                                <label for="organisateurEvent" class="form-label">Organizer</label>
+                                                <input type="text" [(ngModel)]="selectedEvent && selectedEvent.organisateurEvent" name="organisateurEvent" class="form-control" placeholder="Organizer" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="dateFinEvent" class="form-label">End Date</label>
+                                                <input type="date" [(ngModel)]="selectedEvent && selectedEvent.dateFinEvent" name="dateFinEvent" class="form-control" placeholder="Start Date" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="capaciteEvent" class="form-label">Capacity</label>
+                                                <input type="number" [(ngModel)]="selectedEvent && selectedEvent.capaciteEvent" name="capaciteEvent" class="form-control" placeholder="Capacity" required>
+                                            </div>
+                                        </div>
+                                        <!-- Ajoutez plus de champs au besoin -->
+                                    </div>
+                                    <div class="col-md-12"> <!-- Cette division permet de placer le bouton de soumission sur une ligne différente -->
+                                       
+                                        <div class="mb-3">
+                                            <label for="descriptionEvent" class="form-label">Description</label>
+                                            <input type="text" [(ngModel)]="selectedEvent && selectedEvent.descriptionEvent" name="descriptionEvent" class="form-control" placeholder="Description" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="lieuEvent" class="form-label">Place</label>
+                                            <input type="text" [(ngModel)]="selectedEvent && selectedEvent.lieuEvent" name="lieuEvent" class="form-control" placeholder="Location" required>
+                                            </div>
+                                        <div class="mb-3">
+                                            <label for="imageEvent" class="form-label">Image</label>
+                                            <input type="file" [(ngModel)]="selectedEvent && selectedEvent.imageEvent"  (change)="onFileSelected($event)" name="imageEvent" class="form-control" required accept=".png">
+                                        </div>
+                                        <!-- Ajoutez plus de champs au besoin -->
+                                    </div>
+                                    <div class="col-md-12">
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                    </div>
+                                </form>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+              </article>
+            </div><!-- End post list item -->
+          </div><!-- End blog posts list -->
+         
+        </div>
+      </section><!-- End Blog Section -->
+      
+  </main>

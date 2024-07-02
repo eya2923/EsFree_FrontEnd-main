@@ -1,0 +1,117 @@
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<div class="container section-title aos-init aos-animate" data-aos="fade-up">
+   <h2>My Items</h2>
+   <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
+   <br><br>
+   <div class="publication-list">
+     <div *ngFor="let item of items" class="publication-item">
+       <div class="publication-header">
+         <h3>{{ item.name }}</h3>
+         <p>Date de publication : {{ item.datePub }}</p>
+       </div>
+       <div class="publication-content">
+         <div class="image-container">
+           <img src={{item.image}} alt="" class="img-fluid" style="width: 100%;  max-width: 400px; max-height: 300px;">
+         </div>
+         <p>{{ item.description }}</p>
+         <p>Emplacement : {{ item.location }}</p>
+         <p>status : {{ item.status }}</p>
+         </div>
+         
+         <div class="button-container d-flex justify-content-between">
+          <button class="btn btn-primary d-flex align-items-center"  data-toggle="modal" data-toggle="modal" data-target="#myModalEdit" (click)="openAddDialog(item);">
+            <i class="material-icons">edit</i> 
+            <span>Edit</span>
+          </button>
+          
+          <button class="btn btn-primary d-flex align-items-center" [disabled]="item.status === 'Abolished'"
+            (click)="terminate(item.idPub)">
+            <i class="material-icons">check</i> 
+            <span *ngIf="item.status === 'Lost'">Item Found</span>
+            <span *ngIf="item.status === 'Found'">Item Back To Owner</span>
+            <span *ngIf="item.status === 'Abolished'">Abolished</span>
+
+          </button>
+        </div>
+     </div>
+   </div>
+</div>
+
+<div class="modal fade" id="myModalEdit" role="dialog" *ngIf="showAddDialog">
+  <div class="modal-dialog">
+    
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Editer l'objet</h2>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body" style="text-align: center;">
+        <form (ngSubmit)="onSubmit()" #taskForm="ngForm">
+          <div class="form-group">
+            <label for="name">Nom</label>
+            <input type="text" id="name" [(ngModel)]="lostandfound.name" name="name" class="form-control" required minlength="5" >
+            <div *ngIf="taskForm.controls['name']?.invalid && (taskForm.controls['name'].dirty || taskForm.controls['name'].touched)">
+              <div class="text-danger" *ngIf="taskForm.controls['name'].errors?.['required']">Veuillez insérer le nom de publication</div>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="description">Description </label>
+            <textarea id="description" [(ngModel)]="lostandfound.description" name="description" class="form-control" rows="3" required minlength="5"></textarea>
+            <div *ngIf="taskForm.controls['description']?.invalid && (taskForm.controls['description'].dirty || taskForm.controls['description'].touched)">
+              <div class="text-danger" *ngIf="taskForm.controls['description'].errors?.['required']">Veuillez insérer la description.</div>
+              <div class="text-danger" *ngIf="taskForm.controls['description'].errors?.['minlength']">La description doit contenir au moins 5 caractères.</div>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="location">Location </label>
+            <input type="text" id="location" [(ngModel)]="lostandfound.location" name="location" class="form-control" required >
+            <div *ngIf="taskForm.controls['location']?.invalid && (taskForm.controls['location'].dirty || taskForm.controls['location'].touched)">
+              <div class="text-danger" *ngIf="taskForm.controls['location'].errors?.['required']">Veuillez insérer la location.</div>
+            </div>
+          </div>
+         
+          <div class="form-group">
+            <label for="status">Statut </label>
+            <select id="status" [(ngModel)]="lostandfound.status" name="status" class="form-control" required>
+              <option value="" disabled selected>Choisir un statut</option>
+              <option value="Lost">Lost</option>
+              <option value="Found">Found</option>
+            </select>
+            <div *ngIf="taskForm.controls['status']?.invalid && (taskForm.controls['status'].dirty || taskForm.controls['status'].touched)">
+              <div class="text-danger" *ngIf="taskForm.controls['status'].errors?.['required']">Veuillez sélectionner un statut.</div>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="num_tel">Numéro de téléphone </label>
+            <input type="text" id="num_tel" [(ngModel)]="lostandfound.num_tel" name="num_tel" class="form-control" required pattern="[0-9]+(\.[0-9]+)?" minlength="8" maxlength="8" >
+            <div *ngIf="taskForm.controls['num_tel']?.invalid && (taskForm.controls['num_tel'].dirty || taskForm.controls['num_tel'].touched)">
+              <div class="text-danger" *ngIf="taskForm.controls['num_tel'].errors?.['required']">Veuillez insérer le numéro de téléphone.</div>
+              <div class="text-danger" *ngIf="taskForm.controls['num_tel'].errors?.['pattern']">Le numéro de téléphone doit être un nombre valide.</div>
+              <div class="text-danger" *ngIf="taskForm.controls['num_tel'].errors?.['minlength']">Le numéro de téléphone doit contenir 8 chiffres.</div>
+              <div class="text-danger" *ngIf="taskForm.controls['num_tel'].errors?.['maxlength']">Le numéro de téléphone doit contenir 8 chiffres.</div>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="date">Date de publication </label>
+            <input type="date" id="date" [(ngModel)]="lostandfound.datePub" name="date" class="form-control" required>
+            <div *ngIf="taskForm.controls['date']?.invalid && (taskForm.controls['date'].dirty || taskForm.controls['date'].touched)">
+              <div class="text-danger" *ngIf="taskForm.controls['date'].errors?.['required']">Veuillez sélectionner une date.</div>
+            </div>
+          </div>
+
+         
+
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary" [disabled]="taskForm.invalid">Editer Votre Objet</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

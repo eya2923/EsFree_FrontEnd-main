@@ -1,0 +1,101 @@
+body {
+    margin: 0;
+    font-family: sans-serif;
+    background: #f2f2f2;
+}
+h3 {
+    font-size: 20px; /* Make the title smaller */
+    font-weight:100px; /* Optionally, make it bold */
+    color: #222f3e; /* Set color */
+    margin-top: 10px; /* Add margin */
+}
+a{
+    text-decoration: none;
+}
+.gallery{
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    margin: 50px 0;
+}
+.content{
+    position: relative;
+    width: 30%; /* Adjust the width to give the cards more space */
+    margin: 15px;
+    box-sizing: border-box;
+    float: left;
+    text-align: center;
+    border-radius: 15px; /* Adjust border radius */
+    cursor: pointer;
+    padding-top: 10px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Adjust box-shadow */
+    transition: .4s;
+    background: transparent;
+}
+
+
+
+img {
+   width: 100px;
+   height:100px;
+   text-align: center;
+   margin: 0 auto;
+   display: block; 
+}
+
+p{
+    text-align: center;
+    font-size: 14px; /* Make other text smaller */
+    color: #777; 
+    padding-top: 0 8px;
+}
+
+h6{
+    font-size: 20px; /* Make the price smaller */
+    color: #6c757d; /* Set color */
+    margin-top: 5px; /* Add margin */
+   
+}
+
+/*button{
+    text-align: center;
+    color:snow;
+    width: 30%;
+    border: 0;
+    outline: none;
+    cursor: pointer;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    font-size: 20px; 
+    padding: 10px; 
+    border-radius: 80px; 
+
+}*/
+.icons {
+    position: absolute; /* Position the icons absolutely */
+    bottom: 0; /* Align to the bottom */
+    right: 0;
+    margin-right: 20px; /* Align to the right */
+}
+.icons i {
+    display: inline-block; /* Ensure icons are displayed inline */
+    margin-left: 10px; /* Add margin between icons */
+}
+i {
+    font-size: 25px; /* Adjust font size of the icon */
+}
+.buy-1{
+background: #e46161;
+}
+@media(max-width: 1000px){
+    .content{
+        width: 45px;
+    }
+}
+@media(max-width: 750px){
+    .content{
+        width: 100%;
+    }
+}

@@ -1,0 +1,82 @@
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<div data-aos="fade" class="page-title">
+  <div>
+    <div class="container">
+      <div class="row d-flex justify-content-center text-center">
+        <div class="container section-title" data-aos="fade-up">
+          <h2>Welcome to Esprit University Events Hub</h2>
+          <p>Explore a vibrant community-driven space where students like you can create and share exciting events that enrich our university experience.</p>
+         <p>Whether it's organizing thought-provoking seminars, cultural festivals, or sports tournaments, this is your platform to inspire, engage, and connect with fellow students. Let your creativity shine and be a part of shaping unforgettable moments at Esprit University!</p>
+        </div><!-- End Section Title -->
+
+      </div>
+    </div>
+  </div>
+</div><!-- End Page Title -->
+
+<div class="col-lg-6 mx-auto"> <!-- Centrer le formulaire -->
+  <form (ngSubmit)="submitEvent()" [formGroup]="eventForm" class="php-email-form" data-aos="fade-up" data-aos-delay="200">
+    <div class="row gy-4">
+      <div class="col-md-6">
+        <input type="text" formControlName="nomEvent" class="form-control" placeholder="Event Name">
+        <div *ngIf="eventForm.get('nomEvent')?.invalid && eventForm.get('nomEvent')?.touched" class="text-danger">The field is required.</div>
+      </div>
+  
+      <div class="col-md-6">
+        <input type="text" formControlName="organisateurEvent" class="form-control" placeholder="Organizer">
+        <div *ngIf="eventForm.get('organisateurEvent')?.invalid && eventForm.get('organisateurEvent')?.touched" class="text-danger">The field is required.</div>
+      </div>
+  
+      <div class="col-md-12">
+        <input type="text" formControlName="descriptionEvent" class="form-control" placeholder="Description">
+        <div *ngIf="eventForm.get('descriptionEvent')?.invalid && eventForm.get('descriptionEvent')?.touched" class="text-danger">The field is required.</div>
+      </div>
+  
+      <div class="col-md-6">
+        <input type="text" formControlName="lieuEvent" class="form-control" placeholder="Location">
+        <div *ngIf="eventForm.get('lieuEvent')?.invalid && eventForm.get('lieuEvent')?.touched" class="text-danger">The field is required.</div>
+      </div>
+  
+      <div class="col-md-6">
+        <input type="date" formControlName="dateDebutEvent" class="form-control" placeholder="Start Date">
+        <div *ngIf="eventForm.get('dateDebutEvent')?.invalid && eventForm.get('dateDebutEvent')?.touched" class="text-danger">The field is required.</div>
+        <div *ngIf="eventForm.get('dateDebutEvent')?.errors?.['startDateInvalid'] && eventForm.get('dateDebutEvent')?.touched" class="text-danger">The start date cannot be earlier than the current date.</div>
+      </div>
+      
+      <div class="col-md-6">
+        <input type="date" formControlName="dateFinEvent" class="form-control" placeholder="End Date">
+        <div *ngIf="eventForm.get('dateFinEvent')?.invalid && eventForm.get('dateFinEvent')?.touched" class="text-danger">The field is required.</div>
+        <div *ngIf="eventForm.get('dateFinEvent')?.errors?.['endDateInvalid'] && eventForm.get('dateFinEvent')?.touched" class="text-danger">The end date cannot be earlier than the start date.</div>
+      </div>
+      
+  
+      <div class="col-md-6">
+        <input type="number" formControlName="prixEvent" class="form-control" placeholder="Price">
+        <div *ngIf="eventForm.get('prixEvent')?.invalid && eventForm.get('prixEvent')?.touched" class="text-danger">The price cannot be negative.</div>
+      </div>
+  
+      <div class="col-md-6">
+        <input type="number" formControlName="capaciteEvent" class="form-control" placeholder="Capacity">
+        <div *ngIf="eventForm.get('capaciteEvent')?.invalid && eventForm.get('capaciteEvent')?.touched" class="text-danger">The capacity cannot be negative.</div>
+      </div>
+  
+      <div class="col-md-12">
+        <input #fileInput type="file" (change)="onFileSelected($event)" formControlName="imageEvent" class="form-control" required accept=".png">
+        <div *ngIf="eventForm.get('imageEvent')?.invalid && eventForm.get('imageEvent')?.touched" class="text-danger">The field is required.</div>
+      </div>
+
+      <div class="col-md-12 text-center">
+        <button type="submit" [disabled]="eventForm.invalid" class="btn btn-primary">Create Event</button>
+      </div>
+    </div>
+  </form>
+  
+  
+</div><!-- End Contact Form -->
+<br>
+<br>

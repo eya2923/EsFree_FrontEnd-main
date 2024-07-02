@@ -1,0 +1,64 @@
+<div class="iq-card-body">
+    <div id="table" class="table-editable">
+      <span class="table-add float-right mb-3 mr-2">
+         
+      </span>
+      <table class="table table-bordered table-responsive-md table-striped text-center">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Location</th>
+            <th>Status</th>
+            <th>Date</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let type of items" >
+            <td contenteditable="true">{{type.name}}</td>
+            <td contenteditable="true">{{type.description}}</td>
+            <td contenteditable="true">{{type.location}}</td>
+            <td contenteditable="true">{{type.status}}</td>
+            <td contenteditable="true">{{type.datePub}}</td>
+
+            <td>
+              <span ><button type="button" style="background-color: rgb(216, 175, 175);" data-toggle="modal" data-toggle="modal" data-target="#myModal" data-placement="top" title=""  (click)="openDialog(type)"
+                  class="btn iq-bg-pimary btn-rounded btn-sm my-0">Messages</button>
+                  </span>
+                  
+                  <span class="table-remove"><button type="button"  style="margin-left: 20px;" (click)="deleteItem(type.idPub)"
+                    class="btn iq-bg-danger btn-rounded btn-sm my-0">Remove</button>
+                    </span>
+            </td>
+          </tr>
+          
+        </tbody>
+      </table>
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="myModal" role="dialog" *ngIf="showAddDialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header" >
+        <h2 class="modal-title" >{{nameItem}}</h2>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <ng-container *ngIf="listmesageItem[selectedItem]">
+          <div *ngFor="let message of listmesageItem[selectedItem]" class="message-container">
+            <div class="message-header">
+              <h4 class="message-title">Message {{message.idmessage}}</h4>
+            </div>
+            <div class="message-content">{{message.content}}</div>
+            <div class="message-date">Sent at: {{message.sendat}}</div>
+          </div>
+        </ng-container> 
+      </div>
+    </div>
+  </div>
+</div>

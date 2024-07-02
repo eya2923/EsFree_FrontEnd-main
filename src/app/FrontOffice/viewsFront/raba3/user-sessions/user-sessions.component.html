@@ -1,0 +1,106 @@
+<br> 
+<br> 
+<br> 
+<br> 
+ <!-- Testimonials Section - Home Page -->
+<section id="testimonials" class="testimonials">
+
+ <div class="container">
+
+   <div class="row align-items-center">
+
+     <div class="col-lg-5 info" data-aos="fade-up" data-aos-delay="100">
+       <h3>My Game Sessions !</h3>
+       <p>
+         Playing Card Games with university friends can be a delightful blend of camaraderie, strategy, and friendly competition. As the cards are dealt and the game begins, the air is often filled with laughter, banter, and the occasional groan of frustration or cheer of triumph.
+       </p>
+     </div>
+     
+     <div class="col-lg-7" data-aos="fade-up" data-aos-delay="200">
+       <div class="swiper">
+
+         <div class="swiper-wrapper">
+
+           <div class="swiper-slide" >
+            <div class="testimonial-item" *ngFor="let session of sessions">
+              <div class="d-flex">
+                 <img src="assets/FrontOffice/img/testimonials/testimonials-5.jpg" class="testimonial-img flex-shrink-0" alt="">
+                 <div>
+                   <h3>Saul Goodman</h3>
+                   <h4>{{ session.nombrePlaces }} players in lobby</h4>
+                   <div class="stars">
+                     <i class="bi bi-star-fill" *ngFor="let i of getNumberArray(session.nombrePlaces)"></i>
+                   </div>
+                 </div>
+               </div>
+               <p>
+                 <i class="bi bi-quote quote-icon-left"></i>
+                 <span>{{ session.description }}</span>
+                 <i class="bi bi-quote quote-icon-right"></i>
+               </p>
+               <div class="flex align-items-center list-user-action">
+                <a class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit" (click)="openUpdateDialog(session.idRaba3)" data-toggle="modal" data-toggle="modal" data-target="#myModalUpdate"><i class="ri-pencil-line"></i></a>
+                <a class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete" (click)="deleteGameSession(session.idRaba3)"><i class="ri-delete-bin-line"></i></a>
+             </div>
+             
+             </div>
+           </div><!-- End testimonial item -->  
+         </div>
+         <div class="swiper-pagination"></div>
+       </div>
+
+     </div>
+
+   </div>
+
+  </div>
+
+</section><!-- End Testimonials Section -->
+
+
+<div class="modal fade" id="myModalUpdate" role="dialog" *ngIf="showUpdateDialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Edit Game Session</h2>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="onSubmitUpdate()" #taskForm="ngForm">
+          <br>
+          <div class="form-group">
+            <label for="description">Description :</label>
+            <input type="text" id="description" [(ngModel)]="selectedGame && selectedGame.description" name="description" class="form-control" required minlength="5">
+            <div *ngIf="taskForm.controls['description'].invalid && (taskForm.controls['description'].dirty || taskForm.controls['description'].touched)">
+              <div class="text-danger" *ngIf="taskForm.controls['description'].errors?.['required']">Please insert description</div>
+              <div class="text-danger" *ngIf="taskForm.controls['description'].errors?.['minlength']">Description should contain at least 5 characters</div>
+            </div>
+          </div>
+          <br>
+          <div class="form-group">
+            <label for="exampleInputNumber1">Number Of Free Places :</label>
+            <input type="number" [(ngModel)]="selectedGame && selectedGame.nombrePlaces" name="nombrePlaces" class="form-control" id="exampleInputNumber1" value="2">
+            <div *ngIf="taskForm.controls['nombrePlaces'].invalid && (taskForm.controls['nombrePlaces'].dirty || taskForm.controls['nombrePlaces'].touched)">
+              <div class="text-danger" *ngIf="taskForm.controls['nombrePlaces'].errors?.['required']">Please insert value</div>
+            </div>
+          </div>
+          <br>
+          <div class="form-group">
+            <label for="exampleInputdatetime">Start Date :</label>
+            <input type="datetime-local" [(ngModel)]="selectedGame && selectedGame.dateDebut" name="dateDebut" class="form-control" id="exampleInputdatetime" value="2019-12-19T13:45:00">
+          </div>
+          <br>
+          <div class="form-group">
+            <label for="exampleInputdatetime">Finish Date :</label>
+            <input type="datetime-local" [(ngModel)]="selectedGame && selectedGame.dateFin" name="dateFin" class="form-control" id="exampleInputdatetime" value="2019-12-19T13:45:00">
+          </div>
+          <br>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary" [disabled]="taskForm.invalid">Update Game Session</button>
+            <button type="button" class="btn btn-secondary btn-default" data-dismiss="modal" (click)="closeUpdateDialog()">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

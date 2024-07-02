@@ -1,0 +1,57 @@
+<br>
+<br>
+<br>
+<br>
+
+<main id="main">
+
+ <!-- Team Section - Home Page -->
+ <section id="team" class="team">
+
+    <!--  Section Title -->
+    <div class="container section-title" data-aos="fade-up">
+      <h2>GAMES</h2>
+      <p>Select The Game You Want To Play With Your Friends !</p>
+      <br>
+      <br>
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-sm-12 col-lg-6">
+            <div class="row gy-5">
+              <div class="btn-group" role="group" aria-label="Basic example">
+                <button type="button" class="btn dark-icon btn-primary" (click)="getListGames()">All</button>
+                <button type="button" class="btn dark-icon btn-primary" (click)="getListGamesCard()">Card Games</button>
+                <button type="button" class="btn dark-icon btn-primary" (click)="getListGamesSport()">Sports</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+         <br>
+         <br>
+
+    </div><!-- End Section Title -->
+
+    <div class="container">
+     
+
+        <div class="row">
+          <div class="col-lg-4 col-md-6 member" *ngFor="let jeu of games" data-aos="fade-up" data-aos-delay="100">
+            <div class="member-img">
+              <a [routerLink]="['/user/sessionList',jeu.idJeux]">
+                <img src="assets/FrontOffice/img/game.png" class="img-fluid" alt=""  style="width: 100%; height: 100%; object-fit: cover;">
+              </a>    
+            </div>
+            <div class="member-info text-center">
+              <h4>{{ jeu.nom }}</h4>
+              <span>{{ jeu.typeJeux }}</span>
+            </div>
+          </div><!-- End Team Member -->
+        </div><!-- End Row -->
+      </div>
+
+  </section><!-- End Team Section -->
+
+
+</main>

@@ -1,0 +1,171 @@
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<div class="container">
+  <button class="btn btn-primary " (click)="openAddDialog();" data-toggle="modal" data-toggle="modal" data-target="#myModal">
+      <i class="bi bi-plus"></i> Ajouter une maison
+  </button>
+  <br><br>
+  <div class="row">
+      <div class="col-lg-4 col-md-6 col-sm-12" *ngFor="let maison of maison">
+          <div class="card mb-3">
+              <img class="card-img-top" [src]="maison.images[0]" alt="Image de la maison">
+              <div class="card-body">
+                  <h5 class="card-title">{{ maison.adresse }}</h5>
+                  <p class="card-text">Prix : {{ maison.prix }} TND</p>
+                  <p class="card-text">{{ maison.description }}</p>
+                  <div class="img-cap">
+                      
+                      <button class="btn btn-primary " (click)="onModalUpdateOpen(maison)" data-toggle="modal" data-toggle="modal" data-target="#myModalUpdate">
+                        <i class="bi bi-plus"></i> Update
+                    </button>
+                      <a  (click)="deleteMaison(maison.id_maison)" class="delete-link" > Delete <i class="ti-arrow-right"></i></a>
+                      <a  [routerLink]="['/admin/afficherMaison', maison.id_maison]"class=""> Détails !!<i class="ti-arrow-right"></i></a>
+                  </div>
+                  
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+
+<!-- Pop-Up pour ajouter une maison -->
+<div class="modal fade" id="myModal" role="dialog" *ngIf="showAddDialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title">Ajouter une maison</h2>
+        </div>
+        <div class="modal-body">
+          <form (ngSubmit)="onSubmit()" #taskForm="ngForm">
+            <div class="form-group">
+                <label for="adresse">Adresse :</label>
+                <input type="text" id="adresse" [(ngModel)]="newMaison.adresse" name="adresse" class="form-control" required minlength="5">
+                <div *ngIf="taskForm.controls['adresse'].invalid && (taskForm.controls['adresse'].dirty || taskForm.controls['adresse'].touched)">
+                    <div class="text-danger" *ngIf="taskForm.controls['adresse'].errors?.['required']">Veuillez insérer l'adresse.</div>
+                    <div class="text-danger" *ngIf="taskForm.controls['adresse'].errors?.['minlength']">L'adresse doit contenir au moins 5 caractères.</div>
+                </div>
+            </div>
+            <br>
+            <div class="form-group">
+                <label for="description">Description :</label>
+                <input type="text" id="description" [(ngModel)]="newMaison.description" name="description" class="form-control" required minlength="5">
+                <div *ngIf="taskForm.controls['description'].invalid && (taskForm.controls['description'].dirty || taskForm.controls['description'].touched)">
+                    <div class="text-danger" *ngIf="taskForm.controls['description'].errors?.['required']">Veuillez insérer la description.</div>
+                    <div class="text-danger" *ngIf="taskForm.controls['description'].errors?.['minlength']">La description doit contenir au moins 5 caractères.</div>
+                </div>
+            </div>
+            <br>
+            <div class="form-group">
+                <label for="prix">Prix :</label>
+                <input type="text" id="prix" [(ngModel)]="newMaison.prix" name="prix" class="form-control" required pattern="[0-9]+(\.[0-9]+)?">
+                <div *ngIf="taskForm.controls['prix'].invalid && (taskForm.controls['prix'].dirty || taskForm.controls['prix'].touched)">
+                    <div class="text-danger" *ngIf="taskForm.controls['prix'].errors?.['required']">Veuillez insérer le prix.</div>
+                    <div class="text-danger" *ngIf="taskForm.controls['prix'].errors?.['pattern']">Le prix doit être un nombre valide.</div>
+                </div>
+            </div>
+            <br>
+            <div class="form-group">
+                <label for="nbrplacedispo">Nombre de place :</label>
+                <input type="text" id="nbrplacedispo" [(ngModel)]="newMaison.nbrplacedispo" name="nbrplacedispo" class="form-control" required pattern="[0-9]+(\.[0-9]+)?">
+                <div *ngIf="taskForm.controls['nbrplacedispo'].invalid && (taskForm.controls['nbrplacedispo'].dirty || taskForm.controls['nbrplacedispo'].touched)">
+                    <div class="text-danger" *ngIf="taskForm.controls['nbrplacedispo'].errors?.['required']">Veuillez insérer le nombre des places disponibles.</div>
+                    <div class="text-danger" *ngIf="taskForm.controls['nbrplacedispo'].errors?.['pattern']">Le nombre des places doit être un nombre valide.</div>
+                </div>
+            </div>
+            <br>
+            <div class="form-group">
+              <label for="name">Nom : :</label>
+              <input type="text" id="name" [(ngModel)]="username" name="name" class="form-control" required readonly>
+              <div *ngIf="taskForm.controls['name'].invalid && (taskForm.controls['name'].dirty || taskForm.controls['name'].touched)">
+                  <div class="text-danger" *ngIf="taskForm.controls['name'].errors?.['required']">Veuillez insérer le nom de l'utilisateur.</div>
+              </div>
+          </div>
+          <br>
+            
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" [disabled]="taskForm.invalid">Ajouter cette maison</button>
+                <button type="button" class="btn btn-secondary btn-default" data-dismiss="modal">Annuler</button>
+            </div>      
+        </form>
+        </div>
+      </div>
+      
+    </div>
+</div>
+
+<!-- Pop-Up pour modifier une maison -->
+<div class="modal fade" id="myModalUpdate" role="dialog" *ngIf="showUpdateDialog" >
+  <div class="modal-dialog">
+  
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Modifer une maison</h2>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="onSubmitUpdate()" #taskForm="ngForm">
+          <div class="form-group">
+              <label for="adresse">Adresse :</label>
+              <input type="text" id="adresse" [(ngModel)]="newMaison.adresse" name="adresse" class="form-control" required minlength="5">
+              <div *ngIf="taskForm.controls['adresse'].invalid && (taskForm.controls['adresse'].dirty || taskForm.controls['adresse'].touched)">
+                  <div class="text-danger" *ngIf="taskForm.controls['adresse'].errors?.['required']">Veuillez insérer l'adresse.</div>
+                  <div class="text-danger" *ngIf="taskForm.controls['adresse'].errors?.['minlength']">L'adresse doit contenir au moins 5 caractères.</div>
+              </div>
+          </div>
+          <br>
+          <div class="form-group">
+              <label for="description">Description :</label>
+              <input type="text" id="description" [(ngModel)]="newMaison.description" name="description" class="form-control" required minlength="5">
+              <div *ngIf="taskForm.controls['description'].invalid && (taskForm.controls['description'].dirty || taskForm.controls['description'].touched)">
+                  <div class="text-danger" *ngIf="taskForm.controls['description'].errors?.['required']">Veuillez insérer la description.</div>
+                  <div class="text-danger" *ngIf="taskForm.controls['description'].errors?.['minlength']">La description doit contenir au moins 5 caractères.</div>
+              </div>
+          </div>
+          <br>
+          <div class="form-group">
+              <label for="prix">Prix :</label>
+              <input type="text" id="prix" [(ngModel)]="newMaison.prix" name="prix" class="form-control" required pattern="[0-9]+(\.[0-9]+)?">
+              <div *ngIf="taskForm.controls['prix'].invalid && (taskForm.controls['prix'].dirty || taskForm.controls['prix'].touched)">
+                  <div class="text-danger" *ngIf="taskForm.controls['prix'].errors?.['required']">Veuillez insérer le prix.</div>
+                  <div class="text-danger" *ngIf="taskForm.controls['prix'].errors?.['pattern']">Le prix doit être un nombre valide.</div>
+              </div>
+          </div>
+          <br>
+          <div class="form-group">
+            <label for="nbrplacedispo">Nombre de place :</label>
+            <input type="text" id="nbrplacedispo" [(ngModel)]="newMaison.nbrplacedispo" name="nbrplacedispo" class="form-control" required pattern="[0-9]+(\.[0-9]+)?">
+            <div *ngIf="taskForm.controls['nbrplacedispo'].invalid && (taskForm.controls['nbrplacedispo'].dirty || taskForm.controls['nbrplacedispo'].touched)">
+                <div class="text-danger" *ngIf="taskForm.controls['nbrplacedispo'].errors?.['required']">Veuillez insérer le nombre des places disponibles.</div>
+                <div class="text-danger" *ngIf="taskForm.controls['nbrplacedispo'].errors?.['pattern']">Le nombre des places doit être un nombre valide.</div>
+            </div>
+        </div>
+        <br>
+          <div class="form-group">
+            <label for="name">Username :</label>
+            <input type="text" id="name" [(ngModel)]="newMaison.user.name" name="name" class="form-control" required readonly >
+            <div *ngIf="taskForm.controls['name'].invalid && (taskForm.controls['name'].dirty || taskForm.controls['name'].touched)">
+                <div class="text-danger" *ngIf="taskForm.controls['name'].errors?.['required']">Veuillez insérer le nom de l'utilisateur.</div>
+            </div>
+        </div>
+        <br>
+          
+          <div class="modal-footer">
+              <button type="submit" class="btn btn-primary" [disabled]="taskForm.invalid">Modifier cette maison</button>
+              <button type="button" class="btn btn-secondary btn-default" data-dismiss="modal">Annuler</button>
+          </div>
+      </form>
+      </div>
+    </div>
+    
+  </div>
+</div>
+
+  

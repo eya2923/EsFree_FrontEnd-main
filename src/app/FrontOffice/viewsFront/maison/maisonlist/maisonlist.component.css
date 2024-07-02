@@ -1,0 +1,33 @@
+.preview {
+  max-width: 200px;
+}
+.custom-dialog-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+.img-cap {
+    display: flex;
+    justify-content: space-between; /* Aligner les éléments avec un espace entre eux */
+    margin-top: 10px; /* Ajouter un peu d'espace en haut des boutons */
+}
+
+.img-cap a {
+    text-decoration: none;
+    padding: 5px 10px; /* Ajouter un peu de marge interne aux boutons */
+    border: 1px  #ccc; /* Ajouter une bordure aux boutons */
+    border-radius: 5px; /* Ajouter un peu de courbure aux coins des boutons */
+}
+.delete-link {
+  text-decoration: none; /* Supprimer le soulignement par défaut */
+  color: var(--accent-color); /* Couleur du lien */
+}
+
+.delete-link:hover {
+  text-decoration: underline; /* Soulignement au survol */
+  cursor: pointer; /* Afficher le curseur pointer au survol pour indiquer que c'est cliquable */
+}
+
+.left-150 {
+  margin-left: 150px;
+}

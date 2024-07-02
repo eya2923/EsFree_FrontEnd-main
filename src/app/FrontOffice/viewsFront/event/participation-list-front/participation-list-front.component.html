@@ -1,0 +1,98 @@
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<div data-aos="fade" class="page-title">
+    <div>
+      <div class="container">
+        <div class="row d-flex justify-content-center text-center">
+          <div class="container section-title" data-aos="fade-up">
+            <h2>Welcome to Esprit University Events Hub</h2>
+            <p>Explore a vibrant community-driven space where students like you can create and share exciting events that enrich our university experience.</p>
+           <p>Whether it's organizing thought-provoking seminars, cultural festivals, or sports tournaments, this is your platform to inspire, engage, and connect with fellow students. Let your creativity shine and be a part of shaping unforgettable moments at Esprit University!</p>
+          </div><!-- End Section Title -->
+  
+        </div>
+      </div>
+    </div>
+  </div><!-- End Page Title -->
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-10">
+        <table class="table table-striped table-bordered">
+          <thead>
+            <tr>
+              <th>Phone Number</th>
+              <th>Email</th>
+              <th>Number of Places</th>
+              <th>Actions</th>
+              <th>Qr Code</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let participation of participations">
+              <td>{{ participation.numtel }}</td>
+              <td>{{ participation.email }}</td>
+              <td>{{ participation.nbPlace }}</td>
+              <td>
+                <span (click)="openEditParticipationModal(participation.idParticipation)" style="cursor: pointer;" class="action-icon edit-icon">
+                  <i class="bi bi-pencil-square"></i>
+                </span>
+                <span (click)="deleteParticipation(participation.idParticipation)" class="action-icon delete-icon">
+                  <i class="bi bi-trash"></i>
+                </span>
+              </td>
+              <td>
+                <img *ngIf="qrCodeUrls[participation.idParticipation] | async as qrCodeUrl" [src]="qrCodeUrl" alt="QR Code" width="100" height="100">
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Popup de modification de la participation -->
+  <div class="modal fade" id="editParticipationModal" tabindex="-1" aria-labelledby="editParticipationModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editParticipationModalLabel">Edit</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <!-- Votre formulaire de participation ici -->
+          <form (ngSubmit)="editParticipation()" class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="text" [(ngModel)]="selectedParticipation && selectedParticipation.email" name="email" class="form-control" placeholder="Email" required>
+              </div>
+              <div class="mb-3">
+                <label for="nbPlace" class="form-label">Places</label>
+                <input type="number" [(ngModel)]="selectedParticipation && selectedParticipation.nbPlace" name="nbPlace" class="form-control" placeholder="Places" required>
+              </div>
+              <div class="mb-3">
+                <label for="numtel" class="form-label">Number Phone</label>
+                <input type="number" [(ngModel)]="selectedParticipation && selectedParticipation.numtel" name="numtel" class="form-control" placeholder="Number Phone" required>
+              </div>
+              <!-- Ajoutez plus de champs au besoin -->
+            </div>
+            <div class="col-md-12">
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
+  <br>
+<br>
+<br>
+<br>
+
+  

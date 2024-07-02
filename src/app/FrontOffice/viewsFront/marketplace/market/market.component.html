@@ -1,0 +1,80 @@
+<br><br><br><br><br>
+<!--div class="container">
+  <div class="row">
+      <div class="card" style="width: 18rem;">
+          <img src="..." class="card-img-top" alt="...">
+          <div class="card-body">
+              <h5 class="card-title">Card title</h5>
+              <a href="#" class="btn btn-primary">Go somewhere</a>
+          </div>
+      </div>
+    </div>
+  </div!-->
+  <div class="container">
+    <div class="row">
+        <div class="col-md-3">
+          <div class="card"  style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); width: 80%;">
+            <div class="card-body">
+
+              <div class="dropdown">
+                <button class="btn btn-outline-secondary  dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Sort by
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a class="dropdown-item" (click)="sortItemsByPriceDescending()"><i class="las la-sort-amount-up-alt"></i> Sort by highest price</a>
+                  <a class="dropdown-item"  (click)="sortItemsByPriceAS()"><i class="las la-sort-amount-down"></i>   Sort by lowest price</a>
+                </div>
+              </div>
+
+<br><br>
+              <ul class="list-group iq-list-style-1">
+                <li class="mb-2 mr-0" *ngFor="let etat of etats">
+                  <div class="d-flex justify-content-between">
+                    <div class="custom-control custom-checkbox">
+                      <input type="checkbox" class="custom-control-input" [id]="'etatCheckbox_' + etat" #checkbox (change)="filterItemsByEtat(etat, checkbox.checked)">
+                      <label class="custom-control-label" [for]="'etatCheckbox_' + etat">{{ etat }}</label>
+                    </div>
+                    <!-- Optionally, you can display the count of items for each Etat -->
+                    <span class="badge badge- iq-bg-primary">{{ getEtatItemCount(etat) }}</span>
+                  </div>
+                </li>
+              </ul>
+
+
+              
+
+           </div>
+      </div>
+  </div>
+  <div class="col-md-9">
+    <div class="input-group mb-3">
+      <input type="text" class="form-control" placeholder="Search items..." aria-label="Search items" aria-describedby="search-button" [(ngModel)]="searchText" (input)="searchItems()">
+    
+      <button class="btn btn-outline-secondary" type="button" style="margin-left: 10px;" routerLink="/user/cartf">View Cart</button>
+
+    </div>
+  <div class="row">
+
+    <div class="gallery">
+      <div class="content" *ngFor="let pubItem of filteredItems">
+      <img [src]="pubItem.image" alt="Product Image" >
+      <h3>{{ pubItem.name}}</h3>
+      <h6>{{ pubItem.prix }} dt</h6>
+      <br>
+      <br>
+      <div class="icons">
+        <a *ngIf="pubItem.id_pub !== undefined"  (click)="addToCart(pubItem.id_pub)" mat-button ><i class="ri-shopping-cart-line text-success"></i></a>
+        <a [routerLink]="['/user/itemdetail', pubItem.id_pub]"><i  class="ri-information-line "></i></a>
+      </div>
+
+      </div>
+
+    </div> 
+    </div>
+  </div>
+</div>
+</div>
+
+
+
+

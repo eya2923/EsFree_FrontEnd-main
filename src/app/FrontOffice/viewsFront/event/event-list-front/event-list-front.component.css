@@ -1,0 +1,12 @@
+.disabled-button {
+    background-color: #ccc; /* Couleur de fond gris */
+    color: #fff; /* Couleur du texte blanc */
+    cursor: not-allowed; /* Curseur désactivé */
+  }
+
+  .card-image img {
+    width: 100%;
+    height: auto;
+    max-width: 510px;
+    max-height: 240px;
+  }

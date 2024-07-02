@@ -1,0 +1,15 @@
+.custom-dialog-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .preview {
+    max-width: 200px;
+  }
+
+  .zoom:hover
+  {
+      transform: scale(1.1);
+      transition: transform 0.6s ease;
+  }

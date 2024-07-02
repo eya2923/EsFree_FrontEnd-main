@@ -1,0 +1,29 @@
+.zoom-on-hover:hover {
+    transform: scale(1.1); /* Ajustez la valeur selon vos préférences */
+    transition: transform 0.6s ease; /* Ajoutez une transition fluide */
+  }
+  .modal-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-left: 120px;
+    color: #e84545;
+  }
+
+  .form-group label {
+    font-size: 18px;
+    font-weight: bold;
+    color: #555;
+  }
+
+  .form-control {
+    font-size: 16px;
+    color: #333;
+  }
+
+  .text-danger {
+    font-size: 14px;
+    color: #ff0000;
+  }
+
+  

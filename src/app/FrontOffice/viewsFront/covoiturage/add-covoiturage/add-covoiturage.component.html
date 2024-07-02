@@ -1,0 +1,90 @@
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<div class="container-fluid">
+    <div class="row justify-content-center"> <!-- Centering the row -->
+        <div class="col-md-5"> <!-- Adjust this column width to your preference -->
+            <div class="container section-title aos-init aos-animate" data-aos="fade-up">
+                <h2>Ajouter Covoiturage</h2>
+                <div class="iq-card">
+                    <div class="iq-card-header d-flex justify-content-between">
+                        <div class="iq-header-title">
+                            <h4 class="card-title">
+                                Ajouter
+                            </h4>
+                        </div>
+                    </div>
+                    <div class="iq-card-body">
+                        <form (ngSubmit)="onSubmit()" [formGroup]="form">
+                            <div class="form-row">
+                                
+                                <div class="col-md-6 mb-3">
+                                    <label>Departure Date</label>
+                                    <input type="date" class="form-control" [(ngModel)]="covoiturage.date_depart" formControlName="date_depart" required>
+                                    <div *ngIf="form.controls['date_depart'].errors && (form.controls['date_depart'].dirty || form.controls['date_depart'].touched)">
+                                        <div *ngIf="form.controls['date_depart'].errors['required']">Departure date is required.</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label>Number of places</label>
+
+                                    <input type="number" class="form-control" [(ngModel)]="covoiturage.nombre_placecov" formControlName="nombre_placecov" min="1" max="4" required>
+                                    <div *ngIf="form.controls['nombre_placecov'].errors && (form.controls['nombre_placecov'].dirty || form.controls['nombre_placecov'].touched)">
+                                        <div *ngIf="form.controls['nombre_placecov'].errors['required']">This field is required</div>
+                                        <div *ngIf="form.controls['nombre_placecov'].errors['min'] || form.controls['nombre_placecov'].errors['max']">the number must be between 1 and 4</div>
+                                    </div>
+                                </div>
+                            </div>
+                        
+                            <div class="form-row">
+                                <div class="col-md-6 mb-3">
+                                    <label>Departure location</label>
+                                    <select class="form-control" [(ngModel)]="covoiturage.lieu_depart" formControlName="lieu_depart" >
+                                        <option value="">Select a city</option>
+                                        <option *ngFor="let city of tunisianCities" [value]="city">{{ city }}</option>
+                                        <div *ngIf="form.controls['lieu_depart']">You have to select a city</div>
+
+                                    </select>
+                                    <div *ngIf="form.controls['lieu_depart'].errors && (form.controls['lieu_depart'].dirty || form.controls['lieu_depart'].touched)">
+                                        <div *ngIf="form.controls['lieu_depart'].errors['required']">Departure is required.</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label>Destination</label>
+                                    <select class="form-control" [(ngModel)]="covoiturage.destination" formControlName="destination">
+                                        <option value="">Select a city</option>
+                                        <option *ngFor="let city of tunisianCities" [value]="city">{{ city }}</option>
+                                    </select>
+                                    <div *ngIf="form.controls['destination'].errors && (form.controls['destination'].dirty || form.controls['destination'].touched)">
+                                        <div *ngIf="form.controls['destination'].errors['required']">Destination is required.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        
+                            <div class="form-row">
+                                <div class="col-md-12">
+                                    <label>Description</label>
+                                    <textarea type="text" class="form-control" [(ngModel)]="covoiturage.description" formControlName="description"> </textarea>
+                                    
+                                </div>
+                                <div *ngIf="form.controls['description'].errors && (form.controls['description'].dirty || form.controls['description'].touched)">
+                                    <div *ngIf="form.controls['description'].errors['required']">Description is required.</div>
+                                </div>
+                            </div>
+                        
+                            <div class="form-group">
+                                <button  class="btn btn-primary" [disabled]="!form.valid" type="submit">Add carpooling</button>
+                            </div>
+                        </form>
+                        
+                        
+                    </div>
+                </div>
+               
+            </div>
+        </div>
+    </div>
+</div>
