@@ -17,12 +17,4 @@ steps:
     failOnIssues: true
     projectName: 'test0'
     
-- task: DockerInstaller@0
-  inputs:
-    dockerVersion: '20.10.7'
 
-- script: |
-    docker build -t $(imageName) .
-    docker login -u $(dockerHubConnection.username) -p $(dockerHubConnection.password)
-    docker push $(imageName)
-  displayName: 'Build and push Docker image'
