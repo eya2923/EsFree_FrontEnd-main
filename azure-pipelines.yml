@@ -4,22 +4,11 @@ trigger:
 pool:
  name: default
 
-variables:
-  dockerHubConnection: 'DockerHubConnection'
-  imageName: 'brahmieya/votre-image'
-
 steps:
-- task: DockerInstaller@0
-  inputs:
-    dockerVersion: '20.10.7'
-
-- script: docker build -t $(imageName) .
-  displayName: 'Build Docker image'
 
 - task: SnykSecurityScan@1
   inputs:
     serviceConnectionEndpoint: 'snyktest'
-    testType: 'app'
-    monitorWhen: 'always'
+    testType: 'code'
     failOnIssues: true
-    projectName: 'snyktest'
+    
