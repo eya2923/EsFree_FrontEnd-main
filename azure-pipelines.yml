@@ -1,25 +1,55 @@
 trigger:
-- main
+  branches:
+    include:
+      - master
 
-pool:
-  vmImage: 'ubuntu-latest'
+stages:
+- stage: build
+  displayName: Build
 
-variables:
-  dockerHubConnection: 'DockerHubConnection'
-  imageName: 'brahmieya/votre-image'
+  jobs:
+  - job: InstallAndBuild
+    pool:
+      vmImage: 'ubuntu-latest'
 
-steps:
-- task: DockerInstaller@0
-  inputs:
-    dockerVersion: '20.10.7'
+    steps:
+    - task: NodeTool@0
+      inputs:
+        versionSpec: '14.x'
+        displayName: 'Install Node.js'
 
-- script: docker build -t $(imageName) .
-  displayName: 'Build Docker image'
+    - task: Npm@1
+      displayName: 'Install Angular CLI'
+      inputs:
+        command: 'custom'
+        customCommand: 'install -g @angular/cli@14.1.0'
+        workingDir: 'X'
 
-- task: Docker@2
-  inputs:
-    containerRegistry: '$(dockerHubConnection)'
-    repository: '$(imageName)'
-    command: 'push'
-    tags: |
-      latest
+    - task: Npm@1
+      displayName: 'Install npm packages'
+      inputs:
+        command: 'install'
+        workingDir: 'X'
+        verbose: true
+
+    - task: CmdLine@2
+      displayName: 'Build Angular app'
+      inputs:
+        script: 'ng build'
+        workingDirectory: 'Front_Admin/Admin'
+
+    - task: ArchiveFiles@2
+      displayName: 'Archive files'
+      inputs:
+        rootFolderOrFile: '/usr/local/app/dist/'
+        includeRootFolder: false
+        archiveType: 'zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+        replaceExistingArchive: true
+
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish artifacts'
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+        ArtifactName: 'devWebApp'
+        publishLocation: 'Container'
