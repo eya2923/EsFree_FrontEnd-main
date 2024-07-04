@@ -1,13 +1,64 @@
 trigger:
-- main
+  branches:
+    include:
+      - master
 
 pool:
- name: default
+  name: default
 
-steps:
-- task: SnykSecurityScan@1
-  inputs:
-    serviceConnectionEndpoint: 'snyktest'
-    testType: 'code'
-    failOnIssues: false
-    
+stages:
+  - stage: testsnyk
+    jobs:
+      - job: snykScan
+        steps:
+          - task: SnykSecurityScan@1
+            inputs:
+              serviceConnectionEndpoint: 'snyktest'
+              testType: 'code'
+              failOnIssues: false
+
+  - stage: build
+    displayName: Build
+    jobs:
+      - job: build
+        steps:
+          - task: NodeTool@0
+            inputs:
+              versionSpec: '14.x'
+            displayName: 'Install Node.js'
+
+          - task: Npm@1
+            displayName: 'Install Angular CLI'
+            inputs:
+              command: 'custom'
+              customCommand: 'install -g @angular/cli@14.1.0'
+              workingDir: X
+
+          - task: Npm@1
+            displayName: 'Install npm packages'
+            inputs:
+              command: 'install'
+              workingDir: X
+              verbose: true
+
+          - task: CmdLine@2
+            displayName: 'Build Angular app'
+            inputs:
+              script: 'ng build'
+              workingDirectory: Front_Admin/Admin
+
+          - task: ArchiveFiles@2
+            displayName: 'Archive files'
+            inputs:
+              rootFolderOrFile: 'Front_Admin/Admin/dist/'
+              includeRootFolder: false
+              archiveType: zip
+              archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+              replaceExistingArchive: true
+
+          - task: PublishBuildArtifacts@1
+            displayName: 'Publish artifacts'
+            inputs:
+              PathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+              ArtifactName: 'devWebApp'
+              publishLocation: 'Container'
