@@ -32,25 +32,25 @@ stages:
             inputs:
               command: 'custom'
               customCommand: 'install -g @angular/cli@14.1.0'
-              workingDir: X
+              
 
           - task: Npm@1
             displayName: 'Install npm packages'
             inputs:
               command: 'install'
-              workingDir: X
+              
               verbose: true
 
           - task: CmdLine@2
             displayName: 'Build Angular app'
             inputs:
               script: 'ng build'
-              workingDirectory: Front_Admin/Admin
+              workingDirectory: /usr/local/app
 
           - task: ArchiveFiles@2
             displayName: 'Archive files'
             inputs:
-              rootFolderOrFile: 'Front_Admin/Admin/dist/'
+              rootFolderOrFile: '/usr/local/app/dist/'
               includeRootFolder: false
               archiveType: zip
               archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
