@@ -17,26 +17,17 @@ stages:
               testType: 'code'
               failOnIssues: false
 
-  - stage: install_docker
+
+  - stage: build_docker_image
     jobs:
-      - job: install_and_build
+      - job: build_image
+        displayName: 'Build Docker Image'
         steps:
           - task: DockerInstaller@0
             inputs:
               dockerVersion: '17.09.0-ce'
-
+          
           - script: |
-              sudo usermod -aG docker $(whoami)
-              sudo systemctl restart docker
-            displayName: 'Add user to docker group and restart Docker'
-
-          - script: |
-              sudo systemctl status docker
-            displayName: 'Check Docker status'
-
-          - task: Docker@2
-            inputs:
-              containerRegistry: 'dockerhub service'
-              command: 'build'
-              Dockerfile: '**/Dockerfile'
-              tags: 'tag1'
+              # Commande Docker build
+              docker build -t myimage:latest .
+            displayName: 'Build Docker Image'
