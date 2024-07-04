@@ -44,21 +44,4 @@ stages:
           - task: CmdLine@2
             displayName: 'Build Angular app'
             inputs:
-              script: 'ng build'
-              workingDirectory: /usr/local/app
-
-          - task: ArchiveFiles@2
-            displayName: 'Archive files'
-            inputs:
-              rootFolderOrFile: '/usr/local/app/dist/'
-              includeRootFolder: false
-              archiveType: zip
-              archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-              replaceExistingArchive: true
-
-          - task: PublishBuildArtifacts@1
-            displayName: 'Publish artifacts'
-            inputs:
-              PathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-              ArtifactName: 'devWebApp'
-              publishLocation: 'Container'
+              script: 'ng build --prod'
