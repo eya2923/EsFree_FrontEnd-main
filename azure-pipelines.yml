@@ -16,10 +16,9 @@ steps:
 - script: docker build -t $(imageName) .
   displayName: 'Build Docker image'
 
-- task: Docker@2
+- task: SnykSecurityScan@1
   inputs:
-    containerRegistry: '$(dockerHubConnection)'
-    repository: '$(imageName)'
-    command: 'push'
-    tags: |
-      latest
+    serviceConnectionEndpoint: 'snyktest'
+    testType: 'code'
+    failOnIssues: true
+    projectName: 'test'
