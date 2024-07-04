@@ -25,6 +25,15 @@ stages:
             inputs:
               dockerVersion: '17.09.0-ce'
 
+          - script: |
+              sudo usermod -aG docker $(whoami)
+              sudo systemctl restart docker
+            displayName: 'Add user to docker group and restart Docker'
+
+          - script: |
+              sudo systemctl status docker
+            displayName: 'Check Docker status'
+
           - task: Docker@2
             inputs:
               containerRegistry: 'dockerhub service'
