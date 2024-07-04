@@ -29,5 +29,5 @@ stages:
           
           - script: |
               # Commande Docker build
-              docker build -t myimage:latest .
+              sudo docker build -t myimage:latest .
             displayName: 'Build Docker Image'
