@@ -17,31 +17,17 @@ stages:
               testType: 'code'
               failOnIssues: false
 
-  - stage: build
-    displayName: Build
+  - stage: install_docker
     jobs:
-      - job: build
+      - job: install_and_build
         steps:
-          - task: NodeTool@0
+          - task: DockerInstaller@0
             inputs:
-              versionSpec: '14.x'
-            displayName: 'Install Node.js'
+              dockerVersion: '17.09.0-ce'
 
-          - task: Npm@1
-            displayName: 'Install Angular CLI'
+          - task: Docker@2
             inputs:
-              command: 'custom'
-              customCommand: 'install -g @angular/cli@14.1.0'
-              
-
-          - task: Npm@1
-            displayName: 'Install npm packages'
-            inputs:
-              command: 'install'
-              
-              verbose: true
-
-          - task: CmdLine@2
-            displayName: 'Build Angular app'
-            inputs:
-              script: 'ng build --prod'
+              containerRegistry: 'dockerhub service'
+              command: 'build'
+              Dockerfile: '**/Dockerfile'
+              tags: 'tag1'
