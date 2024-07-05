@@ -11,8 +11,13 @@ stages:
     jobs:
       - job: snykScan
         steps:
+          - script: |
+              sudo apt-get update
+              sudo apt-get install -y git
+            displayName: 'Install Git'
+
           - task: SnykSecurityScan@1
             inputs:
               serviceConnectionEndpoint: 'snyktest'
               testType: 'code'
-              failOnIssues: false 
+              failOnIssues: false
