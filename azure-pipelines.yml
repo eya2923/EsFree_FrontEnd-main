@@ -1,0 +1,18 @@
+trigger:
+  branches:
+    include:
+      - master
+
+pool:
+  name: default
+
+stages:
+  - stage: testsnyk
+    jobs:
+      - job: snykScan
+        steps:
+          - task: SnykSecurityScan@1
+            inputs:
+              serviceConnectionEndpoint: 'snyktest'
+              testType: 'code'
+              failOnIssues: false 
