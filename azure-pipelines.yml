@@ -1,5 +1,4 @@
 trigger:
-
   branches:
     include:
       - master
@@ -15,18 +14,22 @@ stages:
       - job: sonarcloud_analysis
         displayName: 'SonarCloud Analysis'
         steps:
+          - checkout: self
+            fetchDepth: 0
 
-        - checkout: self
-          fetchDepth: 0
-        - task: SonarCloudPrepare@2
-          inputs:
-            SonarCloud: 'sonarcloud'
-            organization: 'projetdevsecops'
-            scannerMode: 'CLI'
-            configMode: 'manual'
-            cliProjectKey: 'hadillabidi_DevSecOps'
-            cliProjectName: 'DevSecOps'
-            cliSources: '/'
+          - task: SonarCloudPrepare@2
+            inputs:
+              SonarCloud: 'sonarcloud'
+              organization: 'projetdevsecops'
+              scannerMode: 'CLI'
+              configMode: 'manual'
+              cliProjectKey: 'hadillabidi_DevSecOps'
+              cliProjectName: 'DevSecOps'
+              cliSources: '.'
+
+          - task: SonarCloudAnalyze@2
+            displayName: 'Run SonarCloud Analysis'
+
   - stage: build_docker_image
     jobs:
       - job: build_image
@@ -35,3 +38,12 @@ stages:
           - script: |
               docker build -t myimage:latest .
             displayName: 'Build Docker Image'
+
+      - job: publish_quality_gate
+        displayName: 'Publish Quality Gate Result'
+        dependsOn: build_image
+        steps:
+          - task: SonarCloudPublish@1
+            inputs:
+              pollingTimeoutSec: '300'
+            displayName: 'Publish Quality Gate Result'
