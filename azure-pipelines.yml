@@ -1,12 +1,43 @@
 trigger:
-- main
+  branches:
+    include:
+      - master
 
 pool:
- name: default
+  name: default
 
-steps:
-- task: SnykSecurityScan@1
-  inputs:
-    serviceConnectionEndpoint: 'snyktest'
-    testType: 'code'
-    failOnIssues: false
+stages:
+  - stage: testsnyk
+    jobs:
+      - job: snykScan
+        steps:
+          - task: SnykSecurityScan@1
+            inputs:
+              serviceConnectionEndpoint: 'snyktest'
+              testType: 'code'
+              failOnIssues: false
+
+  - stage: install_docker
+    jobs:
+      - job: install_and_build
+        steps:
+          - task: DockerInstaller@0
+            inputs:
+              dockerVersion: '17.09.0-ce'
+
+          - script: |
+              sudo usermod -aG docker $(whoami)
+              sudo systemctl restart docker
+              newgrp docker
+            displayName: 'Add user to docker group and restart Docker'
+
+          - script: |
+              sudo systemctl status docker
+            displayName: 'Check Docker status'
+
+          - task: Docker@2
+            inputs:
+              containerRegistry: 'dockerhub service'
+              command: 'build'
+              Dockerfile: '**/Dockerfile'
+              tags: 'tag1'
