@@ -1,4 +1,5 @@
 trigger:
+
   branches:
     include:
       - master
@@ -13,6 +14,10 @@ stages:
       - job: sonarcloud_analysis
         displayName: 'SonarCloud Analysis'
         steps:
-          - task: SonarCloudAnalyze@2
-            inputs:
-             jdkversion: 'JAVA_HOME_17_X64'
+         - task: SonarCloudPrepare@2
+           inputs:
+              SonarCloud: 'sonarcloud'
+              organization: 'projetdevsecops'
+              scannerMode: 'MSBuild'
+              projectKey: 'projetdevsecops'
+              projectName: 'projetdevsecops'
