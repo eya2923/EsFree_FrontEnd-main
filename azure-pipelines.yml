@@ -8,16 +8,22 @@ pool:
   name: default
 
 stages:
+
   - stage: analyse_sonarcloud
     displayName: 'Analyze with SonarCloud'
     jobs:
       - job: sonarcloud_analysis
         displayName: 'SonarCloud Analysis'
         steps:
-         - task: SonarCloudPrepare@2
-           inputs:
-              SonarCloud: 'sonarcloud'
-              organization: 'projetdevsecops'
-              scannerMode: 'MSBuild'
-              projectKey: 'projetdevsecops'
-              projectName: 'projetdevsecops'
+
+        - checkout: self
+          fetchDepth: 0
+        - task: SonarCloudPrepare@2
+          inputs:
+            SonarCloud: 'sonarcloud'
+            organization: 'projetdevsecops'
+            scannerMode: 'CLI'
+            configMode: 'manual'
+            cliProjectKey: 'hadillabidi_DevSecOps'
+            cliProjectName: 'DevSecOps'
+            cliSources: '/'
