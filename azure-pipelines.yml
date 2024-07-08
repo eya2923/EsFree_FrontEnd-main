@@ -1,0 +1,18 @@
+trigger:
+  branches:
+    include:
+      - master
+
+pool:
+  name: default
+
+stages:
+  - stage: analyse_sonarcloud
+    displayName: 'Analyze with SonarCloud'
+    jobs:
+      - job: sonarcloud_analysis
+        displayName: 'SonarCloud Analysis'
+        steps:
+          - task: SonarCloudAnalyze@2
+            inputs:
+             jdkversion: 'JAVA_HOME_17_X64'
