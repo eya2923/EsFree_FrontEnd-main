@@ -7,26 +7,17 @@ pool:
   name: default
 
 stages:
-  - stage: testsnyk
-    jobs:
-      - job: snykScan
-        steps:
-          - task: SnykSecurityScan@1
-            inputs:
-              serviceConnectionEndpoint: 'snyktest'
-              testType: 'code'
-              failOnIssues: false
-
   - stage: build_docker_image
     jobs:
       - job: build_image
         displayName: 'Build Docker Image'
         steps:
-          - task: DockerInstaller@0
-            inputs:
-              dockerVersion: '17.09.0-ce'
-          
           - script: |
-              # Commande Docker build
+              sudo usermod -aG docker $(whoami)
+              sudo systemctl restart docker
+              newgrp docker
+            displayName: 'Add user to docker group and restart Docker'
+
+          - script: |
               docker build -t myimage:latest .
             displayName: 'Build Docker Image'
