@@ -13,11 +13,5 @@ stages:
         displayName: 'Build Docker Image'
         steps:
           - script: |
-              sudo usermod -aG docker $(whoami)
-              sudo systemctl restart docker
-              newgrp docker
-            displayName: 'Add user to docker group and restart Docker'
-
-          - script: |
               docker build -t myimage:latest .
             displayName: 'Build Docker Image'
