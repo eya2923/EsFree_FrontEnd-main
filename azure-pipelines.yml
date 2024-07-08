@@ -7,9 +7,8 @@ pool:
   name: default
 
 stages:
-
   - stage: analyse_sonarcloud
-    displayName: 'Analyze with SonarCloud'
+    displayName: 'Analyse with SonarCloud'
     jobs:
       - job: sonarcloud_analysis
         displayName: 'SonarCloud Analysis'
@@ -27,23 +26,23 @@ stages:
               cliProjectName: 'DevSecOps'
               cliSources: '.'
 
-          - task: SonarCloudAnalyze@2
-            displayName: 'Run SonarCloud Analysis'
-
   - stage: build_docker_image
     jobs:
       - job: build_image
         displayName: 'Build Docker Image'
         steps:
           - script: |
-              docker build -t myimage:latest .
+              docker build -t myimage:latest1 .
             displayName: 'Build Docker Image'
 
       - job: publish_quality_gate
         displayName: 'Publish Quality Gate Result'
         dependsOn: build_image
         steps:
-          - task: SonarCloudPublish@1
+          - task: SonarCloudAnalyze@2
+            inputs:
+              jdkVersion: 'JAVA_HOME_17_X64'
+
+          - task: SonarCloudPublish@2
             inputs:
               pollingTimeoutSec: '300'
-            displayName: 'Publish Quality Gate Result'
