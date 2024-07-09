@@ -68,7 +68,3 @@ stages:
               jdkVersion: 'JAVA_HOME_17_X64'
             displayName: 'Run SonarCloud Analysis'
 
-          - task: SonarCloudPublish@2
-            inputs:
-              pollingTimeoutSec: '300'
-            displayName: 'Publish SonarCloud Quality Gate Result'
