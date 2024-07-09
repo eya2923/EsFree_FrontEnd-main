@@ -7,8 +7,10 @@ WORKDIR /usr/local/app
 # Add the source code to app
 COPY ./ /usr/local/app/
 
+# Clean npm cache (optional)
+RUN npm cache clean --force
+
 # Install all the dependencies
-RUN npm install -g npm@latest
 RUN npm install --legacy-peer-deps
 
 # Install Angular CLI globally
