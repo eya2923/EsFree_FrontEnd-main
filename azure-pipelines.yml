@@ -33,6 +33,9 @@ stages:
         displayName: 'Build Application'
         steps:
           - script: |
+              # Set the path to Node.js and npm
+              source /home/eyabrahmi/.bashrc
+
               # Verify Node.js and npm installation
               node -v
               npm -v
