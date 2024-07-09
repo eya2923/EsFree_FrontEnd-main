@@ -44,7 +44,7 @@ stages:
 
               # Build the application
               npm run build
-            displayName: 'Install Node.js 18, Clean Cache, Install Dependencies, and Build Application'
+            displayName: ' Clean Cache, Install Dependencies, and Build Application'
 
       - job: publish_quality_gate
         displayName: 'Publish Quality Gate Result'
