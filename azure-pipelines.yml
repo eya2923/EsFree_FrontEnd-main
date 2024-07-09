@@ -36,7 +36,7 @@ stages:
         displayName: 'Build Docker Image'
         steps:
           - script: |
-              docker build -t myimage:latest2 .
+              docker build -t myimage:latest44 .
             displayName: 'Build Docker Image'
 
       - job: publish_quality_gate
