@@ -20,11 +20,12 @@ stages:
             inputs:
               SonarCloud: 'sonarcloud'
               organization: 'projetdevsecops'
-              scannerMode: 'CLI'
-              configMode: 'manual'
-              cliProjectKey: 'hadillabidi_DevSecOps'
-              cliProjectName: 'DevSecOps'
-              cliSources: '.'
+              scannerMode: 'MSBuild'
+              projectKey: 'hadillabidi_DevSecOps'
+              extraProperties: |
+                sonar.projectKey=hadillabidi_DevSecOps
+                sonar.organization=projetdevsecops
+                # Add any additional properties here
 
   - stage: build_app
     displayName: 'Build Application'
