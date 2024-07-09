@@ -26,21 +26,19 @@ stages:
               cliProjectName: 'DevSecOps'
               cliSources: '.'
 
+          - task: SonarCloudAnalyze@2
+            inputs:
+              jdkVersion: 'JAVA_HOME_17_X64'
+
   - stage: build_docker_image
     jobs:
       - job: build_image
         displayName: 'Build Docker Image'
         steps:
           - script: |
-              docker build -t myimage:77 .
+              docker build -t myimage:99 .
             displayName: 'Build Docker Image'
 
-      - job: publish_quality_gate
-        displayName: 'Publish Quality Gate Result'
-        dependsOn: build_image
-        steps:
-          - task: SonarCloudAnalyze@2
-            inputs:
-              jdkVersion: 'JAVA_HOME_17_X64'
+     
 
          
