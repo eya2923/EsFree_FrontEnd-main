@@ -1,0 +1,18 @@
+
+trigger:
+  branches:
+    include:
+      - master
+
+pool:
+  name: default
+
+stages:
+  - stage: build_docker_image
+    jobs:
+      - job: build_image
+        displayName: 'Build Docker Image'
+        steps:
+          - script: |
+              docker build -t myimage:latest7 .
+            displayName: 'Build Docker Image'
