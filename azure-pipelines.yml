@@ -1,0 +1,48 @@
+trigger:
+  branches:
+    include:
+      - master
+
+pool:
+  name: default
+
+stages:
+  - stage: analyse_sonarcloud
+    displayName: 'Analyse with SonarCloud'
+    jobs:
+      - job: sonarcloud_analysis
+        displayName: 'SonarCloud Analysis'
+        steps:
+          - checkout: self
+            fetchDepth: 0
+
+          - task: SonarCloudPrepare@2
+            inputs:
+              SonarCloud: 'sonarcloud'
+              organization: 'projetdevsecops'
+              scannerMode: 'CLI'
+              configMode: 'manual'
+              cliProjectKey: 'hadillabidi_DevSecOps'
+              cliProjectName: 'DevSecOps'
+              cliSources: '.'
+
+  - stage: build_docker_image
+    jobs:
+      - job: build_image
+        displayName: 'Build Docker Image'
+        steps:
+          - script: |
+              docker build -t myimage:latest77 .
+            displayName: 'Build Docker Image'
+
+      - job: publish_quality_gate
+        displayName: 'Publish Quality Gate Result'
+        dependsOn: build_image
+        steps:
+          - task: SonarCloudAnalyze@2
+            inputs:
+              jdkVersion: 'JAVA_HOME_17_X64'
+
+          - task: SonarCloudPublish@2
+            inputs:
+              pollingTimeoutSec: '300'
