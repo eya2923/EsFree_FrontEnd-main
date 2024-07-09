@@ -34,7 +34,8 @@ stages:
         steps:
           - script: |
               # Set the path to Node.js and npm
-              source /home/eyabrahmi/.bashrc
+              export PATH=$/run/user/1000/fnm_multishells/13167_1720535055733/bin/node
+
 
               # Verify Node.js and npm installation
               node -v
