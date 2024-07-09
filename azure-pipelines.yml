@@ -33,10 +33,6 @@ stages:
         displayName: 'Build Application'
         steps:
           - script: |
-              # Install Node.js 18
-              curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
-              sudo apt-get install -y nodejs
-
               # Clean npm cache
               npm cache clean --force
 
