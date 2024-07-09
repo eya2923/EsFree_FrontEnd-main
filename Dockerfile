@@ -12,8 +12,12 @@ COPY ./ /usr/local/app/
 # Install all the dependencies
 RUN npm install --legacy-peer-deps
 
+# Install Angular CLI globally
+RUN npm install -g @angular/cli
+
 # Generate the build of the application
-RUN npm run ng build 
+RUN ng build --configuration=production
+
 # Stage 2: Serve app with nginx server
 
 # Use official nginx image as the base image
