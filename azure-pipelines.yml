@@ -30,9 +30,17 @@ stages:
             inputs:
               jdkVersion: 'JAVA_HOME_17_X64'
 
+  - stage: build_docker_image
+    jobs:
+      - job: build_image
+        displayName: 'Build Docker Image'
+        steps:
+          - script: |
+              docker build -t myimage:latest2 .
+            displayName: 'Build Docker Image'
+
       - job: publish_quality_gate
         displayName: 'Publish Quality Gate Result'
-        
         steps:
           - script: |
               npm install
