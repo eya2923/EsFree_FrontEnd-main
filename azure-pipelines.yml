@@ -40,8 +40,7 @@ stages:
         dependsOn: build_image
         steps:
           - task: SonarCloudAnalyze@2
-            inputs:
-              jdkVersion: 'JAVA_HOME_17_X64'
+          
 
           - task: SonarCloudPublish@2
             inputs:
