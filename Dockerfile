@@ -1,6 +1,4 @@
-# Stage 1: Compile and Build angular codebase
-
-# Use official node image as the base image
+# Stage 1: Compile and Build Angular codebase
 FROM node:latest as build
 
 # Set the working directory
@@ -10,19 +8,22 @@ WORKDIR /usr/local/app
 COPY ./ /usr/local/app/
 
 # Install all the dependencies
-RUN npm install --legacy-peer-deps -g @angular/cli
+RUN npm install --legacy-peer-deps
+
+# Install Angular CLI globally
+RUN npm install -g @angular/cli
 
 # Generate the build of the application
-RUN npm run build --debug
+RUN ng build --configuration production
 
-
-# Stage 2: Serve app with nginx server
-
-# Use official nginx image as the base image
+# Stage 2: Serve app with Nginx server
 FROM nginx:latest
 
-# Copy the build output to replace the default nginx contents.
+# Copy the build output to replace the default nginx contents
 COPY --from=build /usr/local/app/dist/virtiverse-front-end /usr/share/nginx/html
 
 # Expose port 80
 EXPOSE 80
+
+# Start nginx server
+CMD ["nginx", "-g", "daemon off;"]
