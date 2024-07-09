@@ -10,10 +10,10 @@ WORKDIR /usr/local/app
 COPY ./ /usr/local/app/
 
 # Install all the dependencies
-RUN npm install --force
+RUN npm install --legacy-peer-deps
 
 # Generate the build of the application
-RUN npm run build
+RUN npm run build --force
 # Stage 2: Serve app with nginx server
 
 # Use official nginx image as the base image
