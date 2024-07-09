@@ -1,0 +1,65 @@
+trigger:
+  branches:
+    include:
+      - master
+
+pool:
+  name: default
+
+stages:
+  - stage: analyse_sonarcloud
+    displayName: 'Analyse with SonarCloud'
+    jobs:
+      - job: sonarcloud_analysis
+        displayName: 'SonarCloud Analysis'
+        steps:
+          - checkout: self
+            fetchDepth: 0
+
+          - task: SonarCloudPrepare@2
+            inputs:
+              SonarCloud: 'sonarcloud'
+              organization: 'projetdevsecops'
+              scannerMode: 'CLI'
+              configMode: 'manual'
+              cliProjectKey: 'hadillabidi_DevSecOps'
+              cliProjectName: 'DevSecOps'
+              cliSources: '.'
+
+  - stage: build_app
+    displayName: 'Build Application'
+    jobs:
+      - job: build
+        displayName: 'Build Application'
+        steps:
+          - script: |
+              # Verify Node.js and npm installation
+              node -v
+              npm -v
+
+              # Clean npm cache
+              npm cache clean --force
+
+              # Install project dependencies
+              npm install --legacy-peer-deps
+
+              # Install Angular CLI globally
+              npm install -g @angular/cli
+
+              # Build the application
+              npm run build
+            displayName: ' Clean Cache, Install Dependencies, and Build Application'
+
+      - job: publish_quality_gate
+        displayName: 'Publish Quality Gate Result'
+        dependsOn: build
+        steps:
+          - task: SonarCloudAnalyze@2
+            inputs:
+              jdkVersion: 'JAVA_HOME_17_X64'
+            displayName: 'Run SonarCloud Analysis'
+
+          - task: SonarCloudPublish@2
+            inputs:
+              pollingTimeoutSec: '300'
+            displayName: 'Publish SonarCloud Quality Gate Result'
