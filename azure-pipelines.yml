@@ -5,8 +5,6 @@ trigger:
 
 pool:
   name: default
-  demands:
-    - agent.name -equals eyabrahmi-virtual-machine
 
 stages:
   - stage: analyse_sonarcloud
@@ -28,27 +26,21 @@ stages:
               cliProjectName: 'DevSecOps'
               cliSources: '.'
 
-          - task: SonarCloudAnalyze@2
-            inputs:
-              jdkVersion: 'JAVA_HOME_17_X64'
-
   - stage: build_docker_image
     jobs:
       - job: build_image
         displayName: 'Build Docker Image'
         steps:
           - script: |
-              docker build -t myimage:latest44 .
+              docker build -t myimage:77 .
             displayName: 'Build Docker Image'
 
       - job: publish_quality_gate
         displayName: 'Publish Quality Gate Result'
+        dependsOn: build_image
         steps:
-          - script: |
-              npm install
-              npm run build
-            displayName: 'Build Application'
-
-          - task: SonarCloudPublish@2
+          - task: SonarCloudAnalyze@2
             inputs:
-              pollingTimeoutSec: '300'
+              jdkVersion: 'JAVA_HOME_17_X64'
+
+         
