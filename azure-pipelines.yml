@@ -5,6 +5,8 @@ trigger:
 
 pool:
   name: default
+  demands:
+    - agent.name -equals eyabrahmi-virtual-machine
 
 stages:
   - stage: analyse_sonarcloud
