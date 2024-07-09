@@ -32,27 +32,32 @@ stages:
       - job: build
         displayName: 'Build Application'
         steps:
+          - task: NodeTool@0
+            inputs:
+              versionSpec: '18.x'
+            displayName: 'Install Node.js for frontend'
+
+          # Verify Node.js and npm installation
           - script: |
-              # Set the path to Node.js and npm
-              export PATH=$/run/user/1000/fnm_multishells/13167_1720535055733/bin/node
-
-
-              # Verify Node.js and npm installation
               node -v
               npm -v
+            displayName: 'Verify Node.js and npm version'
 
-              # Clean npm cache
-              npm cache clean --force
+          # Clean npm cache
+          - script: npm cache clean --force
+            displayName: 'Clean npm cache'
 
-              # Install project dependencies
-              npm install --legacy-peer-deps
+          # Install project dependencies
+          - script: npm install --legacy-peer-deps
+            displayName: 'Install project dependencies'
 
-              # Install Angular CLI globally
-              npm install -g @angular/cli
+          # Install Angular CLI globally
+          - script: npm install -g @angular/cli
+            displayName: 'Install Angular CLI globally'
 
-              # Build the application
-              npm run build
-            displayName: ' Clean Cache, Install Dependencies, and Build Application'
+          # Build the application
+          - script: npm run build
+            displayName: 'Build Application'
 
       - job: publish_quality_gate
         displayName: 'Publish Quality Gate Result'
