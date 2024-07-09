@@ -1,19 +1,44 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 trigger:
-- main
+  branches:
+    include:
+      - master
 
 pool:
   name: default
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+stages:
+  - stage: analyse_sonarcloud
+    displayName: 'Analyse with SonarCloud'
+    jobs:
+      - job: sonarcloud_analysis
+        displayName: 'SonarCloud Analysis'
+        steps:
+          - checkout: self
+            fetchDepth: 0
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+          - task: SonarCloudPrepare@2
+            inputs:
+              SonarCloud: 'sonarcloud'
+              organization: 'projetdevsecops'
+              scannerMode: 'CLI'
+              configMode: 'manual'
+              cliProjectKey: 'hadillabidi_DevSecOps'
+              cliProjectName: 'DevSecOps'
+              cliSources: '.'
+
+          - task: SonarCloudAnalyze@2
+            inputs:
+              jdkVersion: 'JAVA_HOME_17_X64'
+
+      - job: publish_quality_gate
+        displayName: 'Publish Quality Gate Result'
+        
+        steps:
+          - script: |
+              npm install
+              npm run build
+            displayName: 'Build Application'
+
+          - task: SonarCloudPublish@2
+            inputs:
+              pollingTimeoutSec: '300'
