@@ -8,14 +8,15 @@ steps:
   displayName: 'Run a one-line script'
 
 - script: |
-    docker pull aquasec/trivy:latest
+    docker pull ghcr.io/aquasecurity/trivy:latest
     docker pull mysql:latest
-    docker run --rm aquasec/trivy:latest image mysql:latest > $(System.DefaultWorkingDirectory)/résultat.txt
+    docker run --rm ghcr.io/aquasecurity/trivy:latest image mysql:latest --format html > $(System.DefaultWorkingDirectory)/résultat.html
   displayName: 'Scan MySQL image with Trivy'
 
 - task: PublishPipelineArtifact@1
   inputs:
-    targetPath: '$(System.DefaultWorkingDirectory)/résultat.txt'
+    targetPath: '$(System.DefaultWorkingDirectory)/résultat.html'
     artifactName: 'trivy-report'
     publishLocation: 'pipeline'
   displayName: 'Publish Trivy Report'
+
