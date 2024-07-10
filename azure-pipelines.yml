@@ -1,11 +1,12 @@
-trigger:
-  branches:
-    include:
-      - master
+# Remove the trigger section for manual run only
+# trigger:
+# - main
+
+# Add pr section to prevent PR triggers
+pr: none
 
 pool:
   name: default
-
 
 steps:
 - script: echo Hello, world!
@@ -14,7 +15,7 @@ steps:
 - script: |
     docker pull aquasec/trivy:latest
     docker pull mysql:latest
-    docker run --rm -v $(System.DefaultWorkingDirectory):/root/.cache/ aquasec/trivy:latest image --format html --output /root/.cache/trivy-report.html mysql:latest
+    docker run  aquasec/trivy:latest image --format html --output /root/.cache/trivy-report.html mysql:latest
   displayName: 'Scan MySQL image with Trivy'
 
 - task: PublishPipelineArtifact@1
@@ -23,4 +24,3 @@ steps:
     artifactName: 'trivy-report'
     publishLocation: 'pipeline'
   displayName: 'Publish Trivy Report'
-
