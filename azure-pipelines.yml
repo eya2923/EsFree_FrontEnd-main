@@ -1,12 +1,7 @@
-# Remove the trigger section for manual run only
-# trigger:
-# - main
-
-# Add pr section to prevent PR triggers
 pr: none
 
 pool:
-  name: default
+  vmImage: 'ubuntu-latest'
 
 steps:
 - script: echo Hello, world!
@@ -15,12 +10,12 @@ steps:
 - script: |
     docker pull aquasec/trivy:latest
     docker pull mysql:latest
-    docker run  aquasec/trivy:latest image --format html --output /root/.cache/trivy-report.html mysql:latest
+    docker run --rm aquasec/trivy:latest image mysql:latest > $(System.DefaultWorkingDirectory)/résultat.txt
   displayName: 'Scan MySQL image with Trivy'
 
 - task: PublishPipelineArtifact@1
   inputs:
-    targetPath: '$(System.DefaultWorkingDirectory)/trivy-report.html'
+    targetPath: '$(System.DefaultWorkingDirectory)/résultat.txt'
     artifactName: 'trivy-report'
     publishLocation: 'pipeline'
   displayName: 'Publish Trivy Report'
