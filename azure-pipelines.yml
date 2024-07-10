@@ -11,7 +11,7 @@ stages:
         steps:
           - checkout: self
             fetchDepth: 0
-
+          
           - task: SonarCloudPrepare@2
             inputs:
               SonarCloud: 'sonarcloud'
@@ -21,6 +21,10 @@ stages:
               cliProjectKey: 'hadillabidi_DevSecOps'
               cliProjectName: 'DevSecOps'
               cliSources: '.'
+              extraProperties: |
+                sonar.projectKey=hadillabidi_DevSecOps
+                sonar.organization=projetdevsecops
+
 
           # Example: Build and test your application here before SonarCloud analysis
 
