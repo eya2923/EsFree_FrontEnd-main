@@ -6,6 +6,7 @@ trigger:
 pool:
   name: default
 
+
 steps:
 - script: echo Hello, world!
   displayName: 'Run a one-line script'
@@ -13,7 +14,7 @@ steps:
 - script: |
     docker pull aquasec/trivy:latest
     docker pull mysql:latest
-    docker run --rm -v $(System.DefaultWorkingDirectory):/root/.cache/ aquasec/trivy:latest mysql:latest --format html --output trivy-report.html
+    docker run --rm -v $(System.DefaultWorkingDirectory):/root/.cache/ aquasec/trivy:latest image --format html --output /root/.cache/trivy-report.html mysql:latest
   displayName: 'Scan MySQL image with Trivy'
 
 - task: PublishPipelineArtifact@1
@@ -22,3 +23,4 @@ steps:
     artifactName: 'trivy-report'
     publishLocation: 'pipeline'
   displayName: 'Publish Trivy Report'
+
