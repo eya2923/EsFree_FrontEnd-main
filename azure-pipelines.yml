@@ -1,0 +1,70 @@
+trigger:
+  branches:
+    include:
+      - master
+
+pr: none # for test for manual run only
+
+pool:
+  name: default
+
+stages:
+  - stage: analyse_build_and_sonarcloud
+    displayName: 'Prepare, Build, and Analyze with SonarCloud'
+    jobs:
+      - job: prepare_build_analyze
+        displayName: 'Prepare, Build, and Analyze'
+        steps:
+          - checkout: self
+            fetchDepth: 0
+          
+          # Step 1: Prepare SonarCloud Analysis
+          - task: SonarCloudPrepare@2
+            inputs:
+              SonarCloud: 'sonarcloud'
+              organization: 'projetdevsecops'
+              scannerMode: 'CLI'
+              configMode: 'manual'
+              cliProjectKey: 'hadillabidi_DevSecOps'
+              cliProjectName: 'DevSecOps'
+              cliSources: '.'
+              extraProperties: |
+                sonar.projectKey=hadillabidi_DevSecOps
+                sonar.organization=projetdevsecops
+
+          # Step 2: Install Node.js and build application
+          - task: NodeTool@0
+            inputs:
+              versionSpec: '18.x'
+            displayName: 'Install Node.js for frontend'
+
+          # Verify Node.js and npm installation
+          - script: |
+              node -v
+              npm -v
+            displayName: 'Verify Node.js and npm version'
+
+          # Clean npm cache
+          - script: npm cache clean --force
+            displayName: 'Clean npm cache'
+
+          # Install project dependencies
+          - script: npm install --legacy-peer-deps
+            displayName: 'Install project dependencies'
+
+          # Install Angular CLI globally
+          - script: npm install -g @angular/cli
+            displayName: 'Install Angular CLI globally'
+
+          # Build the application
+          - script: npm run build
+            displayName: 'Build Application'
+
+          # Step 3: Run SonarCloud Analysis
+          - task: SonarCloudAnalyze@2
+            inputs:
+              jdkVersion: 'JAVA_HOME_17_X64'
+
+          - task: SonarQubePublish@6
+            inputs:
+              pollingTimeoutSec: '300'
