@@ -1,0 +1,18 @@
+trigger:
+  branches:
+    include:
+      - master
+
+pool:
+  name: default
+
+steps:
+- script: echo Hello, world!
+  displayName: 'Run a one-line script'
+
+- task: dependency-check-build-task@6
+  inputs:
+    projectName: 'FRONT'
+    scanPath: '.'
+    format: 'HTML'
+    uploadReports: true
