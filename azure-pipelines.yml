@@ -26,6 +26,7 @@ stages:
 
       - job: build_app
         displayName: 'Build Application'
+        dependsOn: sonarcloud_analysis
         steps:
           - task: NodeTool@0
             inputs:
