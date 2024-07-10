@@ -1,11 +1,7 @@
-trigger:
-  branches:
-    include:
-      - master
+pr: none # for test  for manual run only
 
 pool:
   name: default
-
 stages:
   - stage: analyse_sonarcloud
     displayName: 'Analyse with SonarCloud'
@@ -26,23 +22,47 @@ stages:
               cliProjectName: 'DevSecOps'
               cliSources: '.'
 
-  - stage: build_app
-    displayName: 'Build Application'
-    jobs:
-      - job: build
+          # Example: Build and test your application here before SonarCloud analysis
+
+      - job: build_app
         displayName: 'Build Application'
         steps:
-          - script: |
-              npm cache clean --force
-              npm install --legacy-peer-deps
-              npm run build
-            displayName: 'Clean Cache, Install Dependencies, and Build Application'
+          - task: NodeTool@0
+            inputs:
+              versionSpec: '18.x'
+            displayName: 'Install Node.js for frontend'
 
-      - job: publish_quality_gate
-        displayName: 'Publish Quality Gate Result'
-        dependsOn: build
+          # Verify Node.js and npm installation
+          - script: |
+              node -v
+              npm -v
+            displayName: 'Verify Node.js and npm version'
+
+          # Clean npm cache
+          - script: npm cache clean --force
+            displayName: 'Clean npm cache'
+
+          # Install project dependencies
+          - script: npm install --legacy-peer-deps
+            displayName: 'Install project dependencies'
+
+          # Install Angular CLI globally
+          - script: npm install -g @angular/cli
+            displayName: 'Install Angular CLI globally'
+
+          # Build the application
+          - script: npm run build
+            displayName: 'Build Application'
+
+  - stage: publish_sonarqube
+    displayName: 'Publish to SonarQube'
+    jobs:
+      - job: publish_sonarqube
+        displayName: 'Publish Analysis to SonarQube'
         steps:
           - task: SonarCloudAnalyze@2
             inputs:
-              jdkVersion: 'JAVA_HOME_17_X64'
-            displayName: 'Run SonarCloud Analysis'
+             jdkversion: 'JAVA_HOME_17_X64'
+          - task: SonarQubePublish@6
+            inputs:
+              pollingTimeoutSec: '300'
