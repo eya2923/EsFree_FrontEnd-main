@@ -1,0 +1,21 @@
+pr: none
+
+pool:
+  name: default
+
+steps:
+- script: echo Hello, world!
+  displayName: 'Run a one-line script'
+
+- script: |
+    docker pull ghcr.io/aquasecurity/trivy:latest
+    docker pull mysql:latest
+    docker run --rm -v $(System.DefaultWorkingDirectory):/root/.cache/ ghcr.io/aquasecurity/trivy:latest image mysql:latest --format json > $(System.DefaultWorkingDirectory)/résultat.json
+  displayName: 'Scan MySQL image with Trivy'
+
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: '$(System.DefaultWorkingDirectory)/résultat.json'
+    artifactName: 'trivy-report'
+    publishLocation: 'pipeline'
+  displayName: 'Publish Trivy Report'
