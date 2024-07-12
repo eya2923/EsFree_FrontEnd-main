@@ -1,0 +1,19 @@
+pr: none
+
+pool:
+  name: default
+
+steps:
+- task: SnykSecurityScan@1
+  inputs:
+    serviceConnectionEndpoint: 'snyktest'
+    testType: 'code'
+    failOnIssues: false
+    # Save the scan results to a file
+    additionalArguments: '--json-file-output=snyk-results.json'
+
+# Publish the Snyk scan results as a build artifact
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.SourcesDirectory)/snyk-results.json'
+    ArtifactName: 'SnykScanResults'
