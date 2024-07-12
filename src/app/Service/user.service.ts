@@ -25,39 +25,39 @@ export class UserService {
 
   
   onLogin(obj: any)   {
-    return this.http.post("http://localhost:8082/auth/signin", obj)
+    return this.http.post("http://172.213.199.171:8082/auth/signin", obj)
    
     
   }
   signup(obj: any)   {
-    return this.http.post("http://localhost:8082/auth/signup", obj)
+    return this.http.post("http://172.213.199.171:8082/auth/signup", obj)
    
     
   }
   
   GetUsers(): Observable<User[]>{
-    return this.http.get<User[]>('http://localhost:8082/admin/getUsers')
+    return this.http.get<User[]>('http://172.213.199.171:8082/admin/getUsers')
   }
   GetUser(id: number): Observable<User> {
-    return this.http.get<User>(`http://localhost:8082/admin/getUserById/${id}`);
+    return this.http.get<User>(`http://172.213.199.171:8082/admin/getUserById/${id}`);
   }
 
   addUser(user: any, image: File): Observable<any> {
     const formData: FormData = new FormData();
     formData.append('image', image, image.name);
     formData.append('user', JSON.stringify(user));
-    return this.http.post<any>(`http://localhost:8082/public/addUser`, formData);
+    return this.http.post<any>(`http://172.213.199.171:8082/public/addUser`, formData);
   }
 
   updateUser(user: any, image: File): Observable<any> {
     const formData: FormData = new FormData();
     formData.append('image', image, image.name);
     formData.append('user', JSON.stringify(user));
-    return this.http.post<any>(`http://localhost:8082/public/update`, formData);
+    return this.http.post<any>(`http://172.213.199.171:8082/public/update`, formData);
   }
 
   deleteUser(id: number): Observable<any> {
-    return this.http.delete<any>(`http://localhost:8082/deleteUser/${id}`);
+    return this.http.delete<any>(`http://172.213.199.171:8082/deleteUser/${id}`);
   }
 
 
@@ -68,13 +68,13 @@ export class UserService {
     formData.append('id', userId.toString());
 
     // Assuming this endpoint uploads the image and returns updated user details
-    return this.http.post<any>('http://localhost:8082/public/addimage', formData);
+    return this.http.post<any>('http://172.213.199.171:8082/public/addimage', formData);
   }
 
   forgotPassword(email: string): Observable<any> {
     const formData = new FormData();
     formData.append('email', email);
-    return this.http.post<any>(`http://localhost:8082/auth/forgotPassword`, formData);
+    return this.http.post<any>(`http://172.213.199.171:8082/auth/forgotPassword`, formData);
   }
 
 
@@ -92,7 +92,7 @@ export class UserService {
     
       "refreshToken": loggedUserData
     };
-    this.http.post("http://localhost:8082/auth/refresh", obj).subscribe((Res:any)=>{
+    this.http.post("http://172.213.199.171:8082/auth/refresh", obj).subscribe((Res:any)=>{
       localStorage.setItem('token', JSON.stringify(Res.data));
       this.$refreshTokenReceived.next(true);
     })

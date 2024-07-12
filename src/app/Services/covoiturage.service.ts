@@ -7,7 +7,7 @@
     providedIn: 'root'
   })
   export class CovoiturageService {
-    private baseUrl : String ="http://localhost:8082/Covoiturage";
+    private baseUrl : String ="http://172.213.199.171:8082/Covoiturage";
     constructor(private httpClient : HttpClient) { }
     getListCovoiturage(): Observable<Covoiturage[]> 
     {
