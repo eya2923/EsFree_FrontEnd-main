@@ -1,0 +1,117 @@
+trigger:
+- main
+
+pool:
+  name: default
+
+variables:
+  DOCKERHUB_REPOSITORY: 'brahmieya/stage'  
+  KUBECONFIG: '/home/vsts/.kube/config'
+
+stages:
+  - stage: test_with_snyk_and_dependency_check
+    displayName: 'Test with Snyk and Dependency Check'
+    jobs:
+      - job: tests
+        displayName: 'Run Security and Dependency Tests'
+        steps:
+          - task: SnykSecurityScan@1
+            inputs:
+              serviceConnectionEndpoint: 'snyktest'
+              testType: 'code'
+              failOnIssues: false
+
+          - task: dependency-check-build-task@6
+            inputs:
+              projectName: 'FRONT'
+              scanPath: '.'
+              format: 'HTML'
+              uploadReports: true
+
+  - stage: analyse_build_and_sonarcloud
+    displayName: 'Prepare, Build, and Analyze with SonarCloud'
+    jobs:
+      - job: prepare_build_analyze
+        displayName: 'Prepare, Build, and Analyze'
+        steps:
+          - checkout: self
+            fetchDepth: 0
+          
+          - task: SonarCloudPrepare@2
+            inputs:
+              SonarCloud: 'sonarcloud'
+              organization: 'projetdevsecops'
+              scannerMode: 'CLI'
+              configMode: 'manual'
+              cliProjectKey: 'hadillabidi_DevSecOps'
+              cliProjectName: 'DevSecOps'
+              cliSources: '.'
+              extraProperties: |
+                sonar.projectKey=hadillabidi_DevSecOps
+                sonar.organization=projetdevsecops
+
+          - task: NodeTool@0
+            inputs:
+              versionSpec: '18.x'
+            displayName: 'Install Node.js for frontend'
+
+          - script: |
+              node -v
+              npm -v
+            displayName: 'Verify Node.js and npm version'
+
+          - script: npm cache clean --force
+            displayName: 'Clean npm cache'
+
+          - script: npm install --legacy-peer-deps
+            displayName: 'Install project dependencies'
+
+          - script: npm install -g @angular/cli
+            displayName: 'Install Angular CLI globally'
+
+          - script: npm run build
+            displayName: 'Build Application'
+
+          - task: SonarCloudAnalyze@2
+            inputs:
+              jdkVersion: 'JAVA_HOME_17_X64'
+
+          - task: SonarQubePublish@6
+            inputs:
+              pollingTimeoutSec: '300'
+
+  - stage: build_and_push
+    displayName: 'Build and Push Docker Image'
+    jobs:
+      - job: build_and_push
+        displayName: 'Build and Push'
+        steps:
+          - script: |
+              docker build -t $(DOCKERHUB_REPOSITORY):$(Build.BuildId) .
+            displayName: 'Build Docker Image'
+
+          - task: Docker@2
+            displayName: 'Push Docker Image to Docker Hub'
+            inputs:
+              containerRegistry: 'dockerhub'
+              repository: '$(DOCKERHUB_REPOSITORY)'
+              command: 'push'
+              tags: '$(Build.BuildId)'
+              Dockerfile: '**/Dockerfile'
+
+  - stage: deploy_to_k8s
+    displayName: 'Deploy to Kubernetes'
+    jobs:
+      - job: deploy
+        displayName: 'Deploy'
+        steps:
+          - script: |
+              az aks get-credentials --resource-group NetworkWatcherRG --name clusterstage --overwrite-existing
+            displayName: 'Get AKS Credentials'
+        
+          - task: Kubectl@1
+            inputs:
+              kubernetesServiceEndpoint: 'connectioncluster'
+              command: 'apply'
+              arguments: '-f k8s/appfront.yml'
+            displayName: 'Apply Kubernetes Configuration'
