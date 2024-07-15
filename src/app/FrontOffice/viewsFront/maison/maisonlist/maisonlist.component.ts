@@ -176,7 +176,7 @@ export class MaisonlistComponent {
           // Affichez une alerte d'erreur en cas d'échec de l'ajout du demandeur
           Swal.fire('Error!', 'Erreur dans l\'Envoie de cette demande.', 'error');
         });
-        this.http.post<any>('http://172.213.199.171:8082/send-sms', {}).subscribe(
+        this.http.post<any>('http://172.213.197.32:8082/send-sms', {}).subscribe(
         response => {
           console.log('SMS envoyé avec succès');
         },

@@ -10,7 +10,7 @@ import { Avis } from '../Models/avis';
 export class AvisService {
 
   constructor(private httpClient : HttpClient) { }
-  baseUrl: string='http://172.213.199.171:8082/Avis';
+  baseUrl: string='http://172.213.197.32:8082/Avis';
   getListAvis(): Observable<Avis[]> 
   {
     return this.httpClient.get<Avis[]>(this.baseUrl +'/retreiveAvis')

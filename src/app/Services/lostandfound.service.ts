@@ -8,7 +8,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 })
 export class LostandfoundService {
 
-  private baseUrl : String ="http://172.213.199.171:8082/LostandFound";
+  private baseUrl : String ="http://172.213.197.32:8082/LostandFound";
   constructor(private httpClient : HttpClient) { }
   
   

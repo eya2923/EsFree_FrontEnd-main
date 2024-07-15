@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 })
 export class MessagesService {
 
-  private baseUrl : String ="http://172.213.199.171:8082/message";
+  private baseUrl : String ="http://172.213.197.32:8082/message";
   constructor(private httpClient : HttpClient) { }
   getListmessage(id:any): Observable<message[]> 
   {
