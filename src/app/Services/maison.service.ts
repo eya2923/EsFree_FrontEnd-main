@@ -21,7 +21,7 @@ export interface Page<T> {
 
 export class MaisonService {
 
-  private baseUrl : string = 'http://172.213.199.171:8082/maison';
+  private baseUrl : string = 'http://172.213.199.57:8082/maison';
 
   constructor(private http: HttpClient) { }
   findAllMaisons(): Observable<Maison[]>{

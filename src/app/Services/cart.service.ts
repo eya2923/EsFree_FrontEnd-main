@@ -8,7 +8,7 @@ import { PubItem } from '../Models/pubitem';
   providedIn: 'root'
 })
 export class CartService {
-  private baseUrl : String ="http://172.213.199.171:8082/cart/";
+  private baseUrl : String ="http://172.213.199.57:8082/cart/";
 
   
   constructor(private httpClient : HttpClient) { }

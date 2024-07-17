@@ -7,7 +7,7 @@ import { PubItem } from '../Models/pubitem';
   providedIn: 'root'
 })
 export class PubitemService {
-  private baseUrl : String ="http://172.213.199.171:8082/pubitem/";
+  private baseUrl : String ="http://172.213.199.57:8082/pubitem/";
   private staticUserId = 1;
   constructor(private httpClient : HttpClient) { }
 

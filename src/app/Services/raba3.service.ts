@@ -8,7 +8,7 @@ import { Jeux } from '../Models/Jeux';
   providedIn: 'root'
 })
 export class Raba3Service {
-  private baseUrl:string= "http://172.213.199.171:8082/SessionJeux";
+  private baseUrl:string= "http://172.213.199.57:8082/SessionJeux";
   private fcmUrl = 'https://fcm.googleapis.com/fcm/send';
   private serverKey = 'AAAAVhaWNgw:APA91bFggg2WnoXuzUZP5SyCgYF3G8xi4j455wRoz5-rPOulMWDTonUiJAMsnyvDHFAJlyt376rm59HBbudITMBtMYm7_OWec8gf2lXnbbuRBHRxscA53XB7MJN_NiZp3mmOolQbrjzF';
 
