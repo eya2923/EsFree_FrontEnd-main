@@ -1,0 +1,24 @@
+trigger:
+- main
+
+pool:
+  name: default
+
+variables:
+  DOCKERHUB_REPOSITORY: 'brahmieya/stage'
+  KUBECONFIG: '/home/vsts/.kube/config'
+
+stages:
+  - stage: deploy_to_k8s
+    displayName: 'Deploy to Kubernetes'
+    jobs:
+      - job: deploy
+        displayName: 'Deploy'
+        steps:
+          - task: Kubectl@1
+            displayName: 'Apply Kubernetes Configuration'
+            inputs:
+              action: 'deploy'
+              connectionType: 'kubernetesServiceConnection'
+              kubernetesServiceConnection: 'connectioncluster'
+              manifests: 'k8s/appfront.yml'
