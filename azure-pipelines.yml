@@ -34,6 +34,9 @@ stages:
         displayName: 'Deploy'
         steps:
           - script: |
+              curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+            displayName: 'Install Azure CLI'
+          - script: |
               az account set --subscription 3ef060fd-73bf-4a86-b880-398d0e68c239
               az aks get-credentials --resource-group NetworkWatcherRG --name clusterstage --overwrite-existing
             displayName: 'Get AKS Credentials'
