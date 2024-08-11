@@ -40,11 +40,10 @@ stages:
           - task: SonarCloudPrepare@2
             inputs:
               SonarCloud: 'sonarcloud'
-              organization: 'projetdevsecops'
-              scannerMode: 'CLI'
-              configMode: 'manual'
-              cliProjectKey: 'hadillabidi_DevSecOps'
-              cliProjectName: 'DevSecOps'
+              organization: 'sonareya'
+              scannerMode: 'MSBuild'
+              projectKey: 'breya0105_devsecops'
+              projectName: 'devsecops'
               cliSources: '.'
               extraProperties: |
                 sonar.projectKey=hadillabidi_DevSecOps
@@ -76,39 +75,4 @@ stages:
             inputs:
               jdkVersion: 'JAVA_HOME_17_X64'
 
-          - task: SonarQubePublish@6
-            inputs:
-              pollingTimeoutSec: '300'
-
-  - stage: build_and_push
-    displayName: 'Build and Push Docker Image'
-    jobs:
-      - job: build_and_push
-        displayName: 'Build and Push'
-        steps:
-          - script: |
-              docker build -t $(DOCKERHUB_REPOSITORY):$(Build.BuildId) .
-            displayName: 'Build Docker Image'
-
-          - task: Docker@2
-            displayName: 'Push Docker Image to Docker Hub'
-            inputs:
-              containerRegistry: 'dockerhub'
-              repository: '$(DOCKERHUB_REPOSITORY)'
-              command: 'push'
-              tags: '$(Build.BuildId)'
-              Dockerfile: '**/Dockerfile'
-
-  - stage: deploy_to_k8s
-    displayName: 'Deploy to Kubernetes'
-    jobs:
-      - job: deploy
-        displayName: 'Deploy'
-        steps:
-          - task: Kubectl@1
-            displayName: 'Apply Kubernetes Configuration'
-            inputs:
-              action: 'deploy'
-              connectionType: 'kubernetesServiceConnection'
-              kubernetesServiceConnection: 'connectioncluster'
-              manifests: 'k8s/appfront.yml'
+  
