@@ -23,10 +23,14 @@ stages:
             inputs:
               SonarCloud: 'sonarcloud'
               organization: 'sonareya'
-              scannerMode: 'MSBuild'
-              projectKey: 'breya0105_devsecops'
-              projectName: 'devsecops'
+              scannerMode: 'CLI' # Changed to CLI for Node.js projects
+              configMode: 'manual'
+              cliProjectKey: 'breya0105_devsecops'
+              cliProjectName: 'devsecops'
               cliSources: '.'
+              extraProperties: |
+                sonar.projectKey=breya0105_devsecops
+                sonar.organization=sonareya
 
           # Step 2: Install Node.js and build application
           - task: NodeTool@0
@@ -59,8 +63,9 @@ stages:
           # Step 3: Run SonarCloud Analysis
           - task: SonarCloudAnalyze@2
             inputs:
-              jdkVersion: 'JAVA_HOME_17_X64'
+              jdkVersion: 'JAVA_HOME_17_X64' # Adjust or remove if not needed
 
-          - task: SonarQubePublish@6
+          # Optional: Publish results (use SonarCloudPublish if you need to publish results)
+          - task: SonarCloudPublish@1
             inputs:
-              pollingTimeoutSec: '300'
+              pollingTimeoutSec: '300' # Only if this task is available and needed
