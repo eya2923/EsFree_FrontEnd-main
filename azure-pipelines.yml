@@ -17,19 +17,17 @@ stages:
         steps:
           - checkout: self
             fetchDepth: 0
-         
           - task: SonarCloudPrepare@2
             inputs:
-              SonarCloud: 'sonarcloud'
-              organization: 'projetdevsecops'
-              scannerMode: 'CLI'
-              configMode: 'manual'
-              cliProjectKey: 'breya0105_devsecops'
-              cliProjectName: 'devsecops'
-              cliSources: '.'
-              extraProperties: |
-                sonar.projectKey=breya0105_devsecops
-                sonar.projectName=devsecops
+             SonarCloud: 'sonarcloud'
+             organization: 'sonareya'
+             scannerMode: 'CLI'
+             configMode: 'file'
+             cliSources: '.'
+             extraProperties: |
+               sonar.projectKey=breya0105_devsecops
+                               sonar.projectName=devsecops
+         
 
           - task: NodeTool@0
             inputs:
