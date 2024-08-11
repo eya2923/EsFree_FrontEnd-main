@@ -1,14 +1,33 @@
 trigger:
-  branches:
-    include:
-      - master
-
-pr: none # for test for manual run only
+- main
 
 pool:
   name: default
 
+variables:
+  DOCKERHUB_REPOSITORY: 'brahmieya/stage'  
+  KUBECONFIG: '/home/vsts/.kube/config'
+
 stages:
+  - stage: test_with_snyk_and_dependency_check
+    displayName: 'Test with Snyk and Dependency Check'
+    jobs:
+      - job: tests
+        displayName: 'Run Security and Dependency Tests'
+        steps:
+          - task: SnykSecurityScan@1
+            inputs:
+              serviceConnectionEndpoint: 'snykconx'
+              testType: 'code'
+              failOnIssues: false
+
+          - task: dependency-check-build-task@6
+            inputs:
+              projectName: 'FRONT'
+              scanPath: '.'
+              format: 'HTML'
+              uploadReports: true
+
   - stage: analyse_build_and_sonarcloud
     displayName: 'Prepare, Build, and Analyze with SonarCloud'
     jobs:
@@ -18,45 +37,40 @@ stages:
           - checkout: self
             fetchDepth: 0
           
-          # Step 1: Prepare SonarCloud Analysis
           - task: SonarCloudPrepare@2
             inputs:
               SonarCloud: 'sonarcloud'
-              organization: 'sonareya'
-              scannerMode: 'MSBuild'
-              projectKey: 'breya0105_devsecops'
-              projectName: 'devsecops'
+              organization: 'projetdevsecops'
+              scannerMode: 'CLI'
+              configMode: 'manual'
+              cliProjectKey: 'breya0105_devsecops'
+              cliProjectName: 'devsecops'
               cliSources: '.'
+              extraProperties: |
+                sonar.projectKey=breya0105_devsecops
 
-          # Step 2: Install Node.js and build application
           - task: NodeTool@0
             inputs:
               versionSpec: '18.x'
             displayName: 'Install Node.js for frontend'
 
-          # Verify Node.js and npm installation
           - script: |
               node -v
               npm -v
             displayName: 'Verify Node.js and npm version'
 
-          # Clean npm cache
           - script: npm cache clean --force
             displayName: 'Clean npm cache'
 
-          # Install project dependencies
           - script: npm install --legacy-peer-deps
             displayName: 'Install project dependencies'
 
-          # Install Angular CLI globally
           - script: npm install -g @angular/cli
             displayName: 'Install Angular CLI globally'
 
-          # Build the application
           - script: npm run build
             displayName: 'Build Application'
 
-          # Step 3: Run SonarCloud Analysis
           - task: SonarCloudAnalyze@2
             inputs:
               jdkVersion: 'JAVA_HOME_17_X64'
@@ -64,3 +78,38 @@ stages:
           - task: SonarQubePublish@6
             inputs:
               pollingTimeoutSec: '300'
+
+  - stage: build_and_push
+    displayName: 'Build and Push Docker Image'
+    jobs:
+      - job: build_and_push
+        displayName: 'Build and Push'
+        steps:
+          - script: |
+              docker build -t $(DOCKERHUB_REPOSITORY):$(Build.BuildId) .
+            displayName: 'Build Docker Image'
+
+          - task: Docker@2
+            displayName: 'Push Docker Image to Docker Hub'
+            inputs:
+              containerRegistry: 'duckerhub'
+              repository: '$(DOCKERHUB_REPOSITORY)'
+              command: 'push'
+              tags: '$(Build.BuildId)'
+              Dockerfile: '**/Dockerfile'
+
+ 
+        
+    - stage: deploy_to_k8s
+    displayName: 'Deploy to Kubernetes'
+    jobs:
+      - job: deploy
+        displayName: 'Deploy'
+        steps:
+          - task: Kubectl@1
+            displayName: 'Apply Kubernetes Configuration'
+            inputs:
+              action: 'deploy'
+              connectionType: 'kubernetesServiceConnection'
+              kubernetesServiceConnection: 'connectioncluster'
+              manifests: 'k8s/appfront.yml''
