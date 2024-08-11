@@ -49,7 +49,7 @@ stages:
             displayName: 'Clean npm cache'
 
           # Install project dependencies
-          - script: npm install --legacy-peer-deps
+          - script: npm install --legacy-peer-deps --force
             displayName: 'Install project dependencies'
 
           # Install Angular CLI globally
