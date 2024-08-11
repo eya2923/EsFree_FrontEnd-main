@@ -1,33 +1,14 @@
 trigger:
-- main
+  branches:
+    include:
+      - master
+
+pr: none # for test for manual run only
 
 pool:
   name: default
 
-variables:
-  DOCKERHUB_REPOSITORY: 'brahmieya/stage'
-  KUBECONFIG: '/home/vsts/.kube/config'
-
 stages:
-  - stage: test_with_snyk_and_dependency_check
-    displayName: 'Test with Snyk and Dependency Check'
-    jobs:
-      - job: tests
-        displayName: 'Run Security and Dependency Tests'
-        steps:
-          - task: SnykSecurityScan@1
-            inputs:
-              serviceConnectionEndpoint: 'snyktest'
-              testType: 'code'
-              failOnIssues: false
-
-          - task: dependency-check-build-task@6
-            inputs:
-              projectName: 'FRONT'
-              scanPath: '.'
-              format: 'HTML'
-              uploadReports: true
-
   - stage: analyse_build_and_sonarcloud
     displayName: 'Prepare, Build, and Analyze with SonarCloud'
     jobs:
@@ -36,7 +17,8 @@ stages:
         steps:
           - checkout: self
             fetchDepth: 0
-
+          
+          # Step 1: Prepare SonarCloud Analysis
           - task: SonarCloudPrepare@2
             inputs:
               SonarCloud: 'sonarcloud'
@@ -45,34 +27,40 @@ stages:
               projectKey: 'breya0105_devsecops'
               projectName: 'devsecops'
               cliSources: '.'
-              extraProperties: |
-                sonar.projectKey=hadillabidi_DevSecOps
-                sonar.organization=projetdevsecops
 
+          # Step 2: Install Node.js and build application
           - task: NodeTool@0
             inputs:
               versionSpec: '18.x'
             displayName: 'Install Node.js for frontend'
 
+          # Verify Node.js and npm installation
           - script: |
               node -v
               npm -v
             displayName: 'Verify Node.js and npm version'
 
+          # Clean npm cache
           - script: npm cache clean --force
             displayName: 'Clean npm cache'
 
+          # Install project dependencies
           - script: npm install --legacy-peer-deps
             displayName: 'Install project dependencies'
 
+          # Install Angular CLI globally
           - script: npm install -g @angular/cli
             displayName: 'Install Angular CLI globally'
 
+          # Build the application
           - script: npm run build
             displayName: 'Build Application'
 
+          # Step 3: Run SonarCloud Analysis
           - task: SonarCloudAnalyze@2
             inputs:
               jdkVersion: 'JAVA_HOME_17_X64'
 
-  
+          - task: SonarQubePublish@6
+            inputs:
+              pollingTimeoutSec: '300'
