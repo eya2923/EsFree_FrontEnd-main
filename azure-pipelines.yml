@@ -9,6 +9,25 @@ variables:
   KUBECONFIG: '/home/vsts/.kube/config'
 
 stages:
+  - stage: test_with_snyk_and_dependency_check
+    displayName: 'Test with Snyk and Dependency Check'
+    jobs:
+      - job: tests
+        displayName: 'Run Security and Dependency Tests'
+        steps:
+          - task: SnykSecurityScan@1
+            inputs:
+              serviceConnectionEndpoint: 'snykconx'
+              testType: 'code'
+              failOnIssues: false
+
+          - task: dependency-check-build-task@6
+            inputs:
+              projectName: 'FRONT'
+              scanPath: '.'
+              format: 'HTML'
+              uploadReports: true
+
   - stage: analyse_build_and_sonarcloud
     displayName: 'Prepare, Build, and Analyze with SonarCloud'
     jobs:
@@ -19,16 +38,14 @@ stages:
             fetchDepth: 0
           - task: SonarCloudPrepare@2
             inputs:
-             SonarCloud: 'sonarcloud'
-             organization: 'sonareya'
-             scannerMode: 'CLI'
-             configMode: 'file'
-             cliSources: '.'
-             extraProperties: |
-               sonar.projectKey=breya0105_devsecops
-                               sonar.projectName=devsecops
-         
-
+              SonarCloud: 'sonarcloud'
+              organization: 'sonareya'
+              scannerMode: 'CLI'
+              configMode: 'file'
+              cliSources: '.'
+              extraProperties: |
+                sonar.projectKey=breya0105_devsecops
+                sonar.projectName=devsecops
           - task: NodeTool@0
             inputs:
               versionSpec: '18.x'
@@ -58,3 +75,36 @@ stages:
           - task: SonarQubePublish@6
             inputs:
               pollingTimeoutSec: '300'
+
+  - stage: build_and_push
+    displayName: 'Build and Push Docker Image'
+    jobs:
+      - job: build_and_push
+        displayName: 'Build and Push'
+        steps:
+          - script: |
+              docker build -t $(DOCKERHUB_REPOSITORY):$(Build.BuildId) .
+            displayName: 'Build Docker Image'
+
+          - task: Docker@2
+            displayName: 'Push Docker Image to Docker Hub'
+            inputs:
+              containerRegistry: 'duckerhub'
+              repository: '$(DOCKERHUB_REPOSITORY)'
+              command: 'push'
+              tags: '$(Build.BuildId)'
+              Dockerfile: '**/Dockerfile'
+
+  - stage: deploy_to_k8s
+    displayName: 'Deploy to Kubernetes'
+    jobs:
+      - job: deploy
+        displayName: 'Deploy'
+        steps:
+          - task: Kubectl@1
+            displayName: 'Apply Kubernetes Configuration'
+            inputs:
+              action: 'deploy'
+              connectionType: 'kubernetesServiceConnection'
+              kubernetesServiceConnection: 'connectioncluster'
+              manifests: 'k8s/appfront.yml'
