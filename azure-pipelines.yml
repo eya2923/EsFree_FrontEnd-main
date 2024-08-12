@@ -59,7 +59,7 @@ stages:
           - script: npm cache clean --force
             displayName: 'Clean npm cache'
 
-          - script: npm install --force
+          - script: npm install --legacy-peer-deps
             displayName: 'Install project dependencies'
 
           - script: npm install -g @angular/cli
